@@ -6,7 +6,8 @@ import InfoScreen from "../Screens/infoScreen";
 import PastOrder from "../Screens/pastOrderScreen";
 import CompletedOrder from "../Screens/completedOrderScreen";
 import Profile from "../Screens/profile";
-import { Entypo, Feather, FontAwesome5 } from "@expo/vector-icons";
+
+import { Icon } from "native-base";
 const myDrawerNvigator = createDrawerNavigator(
   {
     InfoScreen: {
@@ -14,7 +15,7 @@ const myDrawerNvigator = createDrawerNavigator(
       navigationOptions: {
         title: "Info",
         drawerIcon: ({ tintColor }) => (
-          <Entypo name="info" size={16} color={tintColor} />
+          <Icon type="Entypo" name="info" size={16} color={tintColor} />
         )
       }
     },
@@ -23,7 +24,7 @@ const myDrawerNvigator = createDrawerNavigator(
       navigationOptions: {
         title: "Pending Orders",
         drawerIcon: ({ tintColor }) => (
-          <Feather name="file-minus" size={16} color={tintColor} />
+          <Icon type="Feather" name="file-minus" size={16} color={tintColor} />
         )
       }
     },
@@ -32,7 +33,12 @@ const myDrawerNvigator = createDrawerNavigator(
       navigationOptions: {
         title: "History",
         drawerIcon: ({ tintColor }) => (
-          <FontAwesome5 name="history" size={16} color={tintColor} />
+          <Icon
+            type="MaterialIcons"
+            name="history"
+            size={16}
+            color={tintColor}
+          />
         )
       }
     }

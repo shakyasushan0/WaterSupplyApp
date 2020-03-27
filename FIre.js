@@ -35,22 +35,15 @@ class Fire {
         .auth()
         .createUserWithEmailAndPassword(user.email, user.password);
 
-      firebase
-        .auth()
-        .currentUser.sendEmailVerification()
-        .then(() => console.log("Email sent"))
-        .catch(err => console.log("Error : ", err));
-
       let db = this.firestore.collection("users").doc(this.uid);
 
       db.set({
+        id: this.uid,
         name: user.name,
         email: user.email,
         avatar: null,
         telnum: user.telnum,
-        address: user.address,
-        latitude: user.latitude,
-        longitude: user.longitude
+        address: user.address
       });
 
       if (user.avatar) {
@@ -83,36 +76,41 @@ class Fire {
   }
 
   addOrder(
+    id,
+    amount,
     name,
     contact,
-    email,
+
     address,
-    garment,
-    noOfClothes,
-    service,
-    time,
     date,
-    status,
-    latitude,
-    longitude
+    time,
+    qty1,
+    qty2,
+    qty3,
+
+    status
   ) {
     let db = this.firestore.collection("orders").doc(this.timestamp.toString());
     db.set({
-      amount: "0",
+      userId: id,
+      amount,
       customer: name,
       contact: contact,
-      email: email,
+
       address: address,
-      garment: garment,
-      noOfClothes: noOfClothes,
-      service: service,
-      time: time,
+
       date: date,
+      time: time,
+      order: {
+        jar_20l: qty1,
+        jar_18l: qty2,
+        bottle_1l: qty3
+      },
       status: status,
-      latitude: latitude,
-      longitude: longitude,
+
       occupied: false,
-      occupiedBy: ""
+      occupiedBy: "",
+      deliveredDate: ""
     });
   }
 }
