@@ -59,6 +59,26 @@ class Fire {
     }
   };
 
+  addDeliveryBoy = async (fn, ln, em, pw, con) => {
+    try {
+      let db = this.firestore
+        .collection("DeliveryBoy")
+        .doc(this.timestamp.toString());
+
+      db.set({
+        FirstName: fn,
+        LastName: ln,
+        email: em,
+        address: pw,
+        Contact: con
+      });
+
+      alert("successfully added");
+    } catch (error) {
+      alert("Error: ", error);
+    }
+  };
+
   signOut = () => {
     firebase.auth().signOut();
   };

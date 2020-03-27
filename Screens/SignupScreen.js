@@ -190,6 +190,7 @@ export default class RegisterScreen extends React.Component {
                   this.setState({ user: { ...this.state.user, email } })
                 }
                 value={this.state.user.email}
+                keyboardType="email-address"
               ></TextInput>
             </View>
 

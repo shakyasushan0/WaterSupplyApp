@@ -40,15 +40,9 @@ export default function PastOrder(props) {
       });
   }, []);
 
-  if (!orders) {
+  if (orders.length === 0) {
     return (
-      <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
-        <ActivityIndicator size="large" />
-      </View>
-    );
-  } else {
-    return (
-      <ScrollView style={{ flex: 1 }}>
+      <View>
         <Header transparent style={{ backgroundColor: "#2183f2" }}>
           <Body style={{ alignItems: "center" }}>
             <Text
@@ -63,77 +57,101 @@ export default function PastOrder(props) {
             </Text>
           </Body>
         </Header>
-        {orders
-          .filter(order => {
-            return order.status != "delivered";
-          })
-          .map(order => {
-            return (
-              <Card style={{ borderColor: "#2183f2" }} key={order.id}>
-                <CardItem
-                  header
-                  style={{ justifyContent: "space-between" }}
-                  bordered
-                >
-                  <Text style={{ fontSize: 18, fontWeight: "500" }}>
-                    {order.id}
-                  </Text>
-                  <Text style={{ fontSize: 18, fontWeight: "500" }}>
-                    {order.date}
-                  </Text>
-                </CardItem>
-                <CardItem style={{ justifyContent: "space-between" }}>
-                  <Body>
-                    {order.order.jar_20l != 0 && (
-                      <Text style={{ color: "#2183f2" }}>
-                        Water jar 20l
-                        .......................................................{" "}
-                        {order.order.jar_20l} jars
-                      </Text>
+        <View style={{ alignItems: "center", justifyContent: "center" }}>
+          <ActivityIndicator size="large" />
+        </View>
+      </View>
+    );
+  } else {
+    return (
+      <View style={{ flex: 1 }}>
+        <Header transparent style={{ backgroundColor: "#2183f2" }}>
+          <Body style={{ alignItems: "center" }}>
+            <Text
+              style={{
+                fontSize: 16,
+                color: "#FFF",
+                fontWeight: "900",
+                textAlign: "center"
+              }}
+            >
+              Your Pending Orders
+            </Text>
+          </Body>
+        </Header>
+        <ScrollView style={{ flex: 1 }}>
+          {orders
+            .filter(order => {
+              return order.status != "delivered";
+            })
+            .map(order => {
+              return (
+                <Card style={{ borderColor: "#2183f2" }} key={order.id}>
+                  <CardItem
+                    header
+                    style={{ justifyContent: "space-between" }}
+                    bordered
+                  >
+                    <Text style={{ fontSize: 18, fontWeight: "500" }}>
+                      {order.id}
+                    </Text>
+                    <Text style={{ fontSize: 18, fontWeight: "500" }}>
+                      {order.date}
+                    </Text>
+                  </CardItem>
+                  <CardItem style={{ justifyContent: "space-between" }}>
+                    <Body>
+                      {order.order.jar_20l != 0 && (
+                        <Text style={{ color: "#2183f2" }}>
+                          Water jar 20l
+                          .......................................................{" "}
+                          {order.order.jar_20l} jars
+                        </Text>
+                      )}
+                      {order.order.jar_18l != 0 && (
+                        <Text style={{ color: "#2183f2" }}>
+                          Water jar 18l
+                          .......................................................{" "}
+                          {order.order.jar_18l} jars
+                        </Text>
+                      )}
+                      {order.order.bottle_1l != 0 && (
+                        <Text style={{ color: "#2183f2" }}>
+                          Water Bottle
+                          ..................................................{" "}
+                          {order.order.bottle_1l} bottles
+                        </Text>
+                      )}
+                    </Body>
+                  </CardItem>
+                  <CardItem
+                    footer
+                    style={{ justifyContent: "space-between" }}
+                    bordered
+                  >
+                    {order.status === "pending" && (
+                      <Icon
+                        type="FontAwesome5"
+                        name="truck-loading"
+                        size={16}
+                        style={{ color: "#2183f2" }}
+                      />
                     )}
-                    {order.order.jar_18l != 0 && (
-                      <Text style={{ color: "#2183f2" }}>
-                        Water jar 18l
-                        .......................................................{" "}
-                        {order.order.jar_18l} jars
-                      </Text>
+                    {order.status === "delivery on progress" && (
+                      <Icon
+                        type="MaterialCommunityIcons"
+                        name="truck-delivery"
+                        size={20}
+                        style={{ color: "#2183f2" }}
+                      />
                     )}
-                    {order.order.bottle_1l != 0 && (
-                      <Text style={{ color: "#2183f2" }}>
-                        Water Bottle
-                        ..................................................{" "}
-                        {order.order.bottle_1l} bottles
-                      </Text>
-                    )}
-                  </Body>
-                </CardItem>
-                <CardItem
-                  footer
-                  style={{ justifyContent: "space-between" }}
-                  bordered
-                >
-                  {order.status === "pending" && (
-                    <Icon
-                      type="FontAwesome5"
-                      name="truck-loading"
-                      size={16}
-                      style={{ color: "#2183f2" }}
-                    />
-                  )}
-                  {order.status === "delivery on progress" && (
-                    <Icon
-                      type="MaterialCommunityIcons"
-                      name="truck-delivery"
-                      size={20}
-                      style={{ color: "#2183f2" }}
-                    />
-                  )}
-                  <Text style={{ color: "#2183f2" }}>Rs. {order.amount}</Text>
-                </CardItem>
-              </Card>
-            );
-          })}
-      </ScrollView>
+                    <Text style={{ color: "#2183f2" }}>Rs. {order.amount}</Text>
+                  </CardItem>
+                </Card>
+              );
+            })}
+        </ScrollView>
+      </View>
     );
   }
 }

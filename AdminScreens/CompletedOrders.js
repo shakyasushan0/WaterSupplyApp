@@ -7,6 +7,7 @@ import {
   TouchableOpacity
 } from "react-native";
 import { Card, CardItem, Header, Body, Icon } from "native-base";
+import { Divider } from "react-native-elements";
 import Fire from "../FIre";
 const deleteOrder = id => {
   Fire.shared.firestore
@@ -16,13 +17,13 @@ const deleteOrder = id => {
     .then(() => alert("deleted successfully"))
     .catch(err => alert(err));
 };
-export default function CompletedOrder(props) {
+export default function CompletedScreen(props) {
   const [orders, setOrders] = useState([]);
   useEffect(() => {
-    const user = props.id || Fire.shared.uid;
+    // const user = props.id || Fire.shared.uid;
     Fire.shared.firestore
       .collection("orders")
-      .where("userId", "==", user)
+      // .where("userId", "==", user)
       .where("status", "==", "delivered")
       .onSnapshot(querySnapshot => {
         const orders = [];
@@ -56,7 +57,7 @@ export default function CompletedOrder(props) {
   }, []);
   if (orders.length === 0) {
     return (
-      <View>
+      <View style={{ flex: 1 }}>
         <Header transparent style={{ backgroundColor: "#2183f2" }}>
           <Body style={{ alignItems: "center" }}>
             <Text
@@ -67,11 +68,13 @@ export default function CompletedOrder(props) {
                 textAlign: "center"
               }}
             >
-              Transaction History
+              Completed Orders
             </Text>
           </Body>
         </Header>
-        <View style={{ alignItems: "center", justifyContent: "center" }}>
+        <View
+          style={{ flex: 1, alignItems: "center", justifyContent: "center" }}
+        >
           <ActivityIndicator size="large" />
         </View>
       </View>
@@ -89,14 +92,14 @@ export default function CompletedOrder(props) {
                 textAlign: "center"
               }}
             >
-              Transaction History
+              Completed Orders
             </Text>
           </Body>
         </Header>
         <ScrollView style={{ flex: 1 }}>
           {orders.map(order => {
             return (
-              <Card style={{ borderColor: "#2183f2" }} key={order.id}>
+              <Card style={{ borderColor: "green" }} key={order.id}>
                 <CardItem
                   header
                   style={{ justifyContent: "space-between" }}
@@ -111,27 +114,41 @@ export default function CompletedOrder(props) {
                 </CardItem>
                 <CardItem style={{ justifyContent: "space-between" }}>
                   <Body>
-                    {order.order.jar_20l != 0 && (
-                      <Text style={{ color: "#2183f2" }}>
-                        Water jar 20l
-                        .......................................................{" "}
-                        {order.order.jar_20l} jars
-                      </Text>
-                    )}
-                    {order.order.jar_18l != 0 && (
-                      <Text style={{ color: "#2183f2" }}>
-                        Water jar 18l
-                        .......................................................{" "}
-                        {order.order.jar_18l} jars
-                      </Text>
-                    )}
-                    {order.order.bottle_1l != 0 && (
-                      <Text style={{ color: "#2183f2" }}>
-                        Water Bottle
-                        ..................................................{" "}
-                        {order.order.bottle_1l} bottles
-                      </Text>
-                    )}
+                    <Text style={{ fontSize: 18 }}>{order.customer}</Text>
+                    <Text style={{ fontSize: 18 }}>{order.address}</Text>
+                    <Text style={{ fontSize: 18 }}>{order.contact}</Text>
+                    <Text>
+                      <Divider
+                        style={{
+                          width: 150,
+                          height: 2,
+                          backgroundColor: "red"
+                        }}
+                      />
+                    </Text>
+                    <View style={{ marginTop: 5, marginLeft: 15 }}>
+                      {order.order.jar_20l != 0 && (
+                        <Text style={{ color: "#2183f2" }}>
+                          Water jar 20l
+                          ................................................{" "}
+                          {order.order.jar_20l} jars
+                        </Text>
+                      )}
+                      {order.order.jar_18l != 0 && (
+                        <Text style={{ color: "#2183f2" }}>
+                          Water jar 18l
+                          ................................................{" "}
+                          {order.order.jar_18l} jars
+                        </Text>
+                      )}
+                      {order.order.bottle_1l != 0 && (
+                        <Text style={{ color: "#2183f2" }}>
+                          Water Bottle
+                          ................................................{" "}
+                          {order.order.bottle_1l} bottles
+                        </Text>
+                      )}
+                    </View>
                   </Body>
                 </CardItem>
                 <CardItem
@@ -141,10 +158,10 @@ export default function CompletedOrder(props) {
                 >
                   <TouchableOpacity onPress={() => deleteOrder(order.id)}>
                     <Icon
-                      type="MaterialCommunityIcons"
-                      name="file-check"
+                      type="MaterialIcons"
+                      name="delete"
                       size={16}
-                      style={{ color: "green" }}
+                      style={{ color: "red" }}
                     />
                   </TouchableOpacity>
                   <Text style={{ color: "#2183f2" }}>Rs. {order.amount}</Text>

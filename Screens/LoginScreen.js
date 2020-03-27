@@ -46,6 +46,7 @@ export default class LoginScreen extends React.Component {
           animationType="slide"
           transparent={true}
           visible={this.state.isModalVisible}
+          onRequestClose={() => this.setState({ isModalVisible: false })}
         >
           <View
             style={{
