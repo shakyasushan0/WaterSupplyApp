@@ -25,13 +25,17 @@ function PendingScreen(props) {
   const [toolTipVisible, setToolTipVisible] = useState(false);
   const [date, setDate] = useState("");
   const [msg, setMsg] = useState("this is whatsapp");
+  const [custName, setCustName] = useState("");
+  const [ord, setOrd] = useState({});
+  const [lat, setLat] = useState(null);
+  const [long, setLong] = useState(null);
 
-  const sendOnWhatsApp = (msg) => {
+  const sendOnWhatsApp = (msg, mobile) => {
     // let msg = msg;
-    let mobile = "9860036647";
+    // let mobile = "9860036647";
     if (mobile) {
       if (msg) {
-        let url = "whatsapp://send?text=" + msg + "&phone=91" + mobile;
+        let url = "whatsapp://send?text=" + msg + "&phone=+977" + mobile;
         Linking.openURL(url)
           .then((data) => {
             console.log("WhatsApp Opened");
@@ -73,18 +77,26 @@ function PendingScreen(props) {
 
     getDirections(data);
   };
-  const handleUpdate = (id, name) => {
+  const handleUpdate = async (id, name, cust, ord, lat, long, mob) => {
     let db = Fire.shared.firestore.collection("orders").doc(id);
-    db.update({
-      occupiedBy: name,
-      occupied: true,
-      status: "delivery on progress",
-    })
+    await db
+      .update({
+        occupiedBy: name,
+        occupied: true,
+        status: "delivery on progress",
+      })
       .then((result) => {
         alert("Successfully Assigned");
         setModalVisible(false);
       })
       .catch((err) => alert("error: ", err));
+
+    sendOnWhatsApp(
+      `You have been assingned new order, ***Customer:${cust}***orders:${JSON.stringify(
+        ord
+      )}***Location:${lat},${long}***   `,
+      mob
+    );
   };
   const setDelivered = (id) => {
     let db = Fire.shared.firestore.collection("orders").doc(id);
@@ -292,6 +304,10 @@ function PendingScreen(props) {
                       onPress={() => {
                         setModalVisible(true);
                         setId(order.id);
+                        setCustName(order.customer);
+                        setOrd(order.order);
+                        setLat(order.latitude);
+                        setLong(order.longitude);
                       }}
                     >
                       <Icon
@@ -376,7 +392,17 @@ function PendingScreen(props) {
               {users.map((user) => (
                 <TouchableOpacity
                   key={user.email}
-                  onPress={() => handleUpdate(id, user.FirstName)}
+                  onPress={() =>
+                    handleUpdate(
+                      id,
+                      user.FirstName,
+                      custName,
+                      ord,
+                      lat,
+                      long,
+                      user.Contact
+                    )
+                  }
                 >
                   <Card>
                     <CardItem style={{ justifyContent: "space-between" }}>
