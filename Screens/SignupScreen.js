@@ -10,7 +10,7 @@ import {
   KeyboardAvoidingView,
   ScrollView,
   ActivityIndicator,
-  Modal
+  Modal,
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import UserPermissions from "../utilities/UserPermissions";
@@ -22,7 +22,7 @@ import { LinearGradient } from "expo-linear-gradient";
 
 export default class RegisterScreen extends React.Component {
   static navigationOptions = {
-    header: null
+    header: null,
   };
   constructor(props) {
     super(props);
@@ -34,13 +34,35 @@ export default class RegisterScreen extends React.Component {
         password: "",
         avatar: null,
         telnum: "",
-        address: ""
+        address: "",
+        latitude: null,
+        longitude: null,
       },
       errorMessage: null,
       authenticating: false,
-      isModalVisible: false
+      isModalVisible: false,
     };
+    this._getLocationAsync();
   }
+  _getLocationAsync = async () => {
+    let { status } = Permissions.askAsync(Permissions.LOCATION);
+    if (status !== "granted") {
+      console.log("permission to access location was denied!!!");
+    }
+    let location = await Location.getCurrentPositionAsync({
+      enableHighAccuracy: true,
+    });
+    let region = {
+      latitude: location.coords.latitude,
+      longitude: location.coords.longitude,
+      latitudeDelta: 0.0922,
+      longitudeDelta: 0.0421,
+    };
+    let latitude = region.latitude;
+    let longitude = region.longitude;
+    this.setState({ user: { ...this.state.user, latitude } });
+    this.setState({ user: { ...this.state.user, longitude } });
+  };
 
   handleSignUp = () => {
     const { name, email, password, avatar, telnum, address } = this.state.user;
@@ -70,7 +92,7 @@ export default class RegisterScreen extends React.Component {
     let result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
       allowsEditing: true,
-      aspect: [4, 3]
+      aspect: [4, 3],
     });
 
     if (!result.cancelled) {
@@ -80,7 +102,7 @@ export default class RegisterScreen extends React.Component {
 
   render() {
     return (
-      <KeyboardAvoidingView style={styles.container} behavior="padding">
+      <ScrollView style={styles.container} behavior="padding">
         {this.state.errorMessage === null && (
           <Modal
             animationType="slide"
@@ -93,7 +115,7 @@ export default class RegisterScreen extends React.Component {
                 backgroundColor: "#000000aa",
                 flex: 1,
                 alignItems: "center",
-                justifyContent: "center"
+                justifyContent: "center",
               }}
             >
               <View
@@ -104,7 +126,7 @@ export default class RegisterScreen extends React.Component {
                   width: 300,
                   height: 100,
                   borderRadius: 5,
-                  backgroundColor: "#0A3D62"
+                  backgroundColor: "#0A3D62",
                 }}
               >
                 <Text style={{ color: "white", fontSize: 20 }}>
@@ -115,7 +137,7 @@ export default class RegisterScreen extends React.Component {
             </View>
           </Modal>
         )}
-        <ScrollView>
+        <KeyboardAvoidingView>
           <StatusBar barStyle="light-content"></StatusBar>
           <Image
             source={require("../assets/authHeader1.png")}
@@ -140,7 +162,7 @@ export default class RegisterScreen extends React.Component {
               position: "absolute",
               top: 64,
               alignItems: "center",
-              width: "100%"
+              width: "100%",
             }}
           >
             <Text
@@ -174,7 +196,7 @@ export default class RegisterScreen extends React.Component {
               <Text style={styles.inputTitle}>Full Name</Text>
               <TextInput
                 style={styles.input}
-                onChangeText={name =>
+                onChangeText={(name) =>
                   this.setState({ user: { ...this.state.user, name } })
                 }
                 value={this.state.user.name}
@@ -186,7 +208,7 @@ export default class RegisterScreen extends React.Component {
               <TextInput
                 style={styles.input}
                 autoCapitalize="none"
-                onChangeText={email =>
+                onChangeText={(email) =>
                   this.setState({ user: { ...this.state.user, email } })
                 }
                 value={this.state.user.email}
@@ -200,7 +222,7 @@ export default class RegisterScreen extends React.Component {
                 style={styles.input}
                 secureTextEntry
                 autoCapitalize="none"
-                onChangeText={password =>
+                onChangeText={(password) =>
                   this.setState({ user: { ...this.state.user, password } })
                 }
                 value={this.state.user.password}
@@ -212,7 +234,7 @@ export default class RegisterScreen extends React.Component {
                 style={styles.input}
                 autoCapitalize="none"
                 keyboardType={"numeric"}
-                onChangeText={telnum =>
+                onChangeText={(telnum) =>
                   this.setState({ user: { ...this.state.user, telnum } })
                 }
                 value={this.state.user.telnum}
@@ -223,7 +245,7 @@ export default class RegisterScreen extends React.Component {
               <TextInput
                 style={styles.input}
                 autoCapitalize="none"
-                onChangeText={address =>
+                onChangeText={(address) =>
                   this.setState({ user: { ...this.state.user, address } })
                 }
                 value={this.state.user.address}
@@ -246,37 +268,37 @@ export default class RegisterScreen extends React.Component {
               </Text>
             </Text>
           </TouchableOpacity>
-        </ScrollView>
-      </KeyboardAvoidingView>
+        </KeyboardAvoidingView>
+      </ScrollView>
     );
   }
 }
 const styles = StyleSheet.create({
   container: {
-    flex: 1
+    flex: 1,
   },
   greeting: {
     marginTop: 32,
     fontSize: 18,
     fontWeight: "500",
     textAlign: "center",
-    color: "#FFF"
+    color: "#FFF",
   },
   form: {
     marginBottom: 48,
-    marginHorizontal: 30
+    marginHorizontal: 30,
   },
   inputTitle: {
     color: "#8A8F9E",
     fontSize: 10,
-    textTransform: "uppercase"
+    textTransform: "uppercase",
   },
   input: {
     borderBottomColor: "#8A8F9E",
     borderBottomWidth: StyleSheet.hairlineWidth,
     height: 40,
     fontSize: 15,
-    color: "#161F3D"
+    color: "#161F3D",
   },
   button: {
     marginHorizontal: 30,
@@ -284,19 +306,19 @@ const styles = StyleSheet.create({
     borderRadius: 7,
     height: 52,
     alignItems: "center",
-    justifyContent: "center"
+    justifyContent: "center",
   },
   errorMessage: {
     height: 72,
     alignItems: "center",
     justifyContent: "center",
-    marginHorizontal: 30
+    marginHorizontal: 30,
   },
   error: {
     color: "#E9446A",
     fontSize: 13,
     fontWeight: "600",
-    textAlign: "center"
+    textAlign: "center",
   },
   back: {
     position: "absolute",
@@ -307,7 +329,7 @@ const styles = StyleSheet.create({
     borderRadius: 16,
     backgroundColor: "rgba(21, 22, 48, 0.1)",
     alignItems: "center",
-    justifyContent: "center"
+    justifyContent: "center",
   },
   avatarPlaceholder: {
     width: 100,
@@ -316,12 +338,12 @@ const styles = StyleSheet.create({
     borderRadius: 50,
     marginTop: 48,
     justifyContent: "center",
-    alignItems: "center"
+    alignItems: "center",
   },
   avatar: {
     position: "absolute",
     width: 100,
     height: 100,
-    borderRadius: 50
-  }
+    borderRadius: 50,
+  },
 });

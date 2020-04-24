@@ -9,15 +9,12 @@ class Fire {
       const response = await fetch(uri);
       const file = await response.blob();
 
-      let upload = firebase
-        .storage()
-        .ref(filename)
-        .put(file);
+      let upload = firebase.storage().ref(filename).put(file);
 
       upload.on(
         "state_changed",
-        snapshot => {},
-        err => {
+        (snapshot) => {},
+        (err) => {
           rej(err);
         },
         async () => {
@@ -27,7 +24,7 @@ class Fire {
       );
     });
   };
-  createUser = async user => {
+  createUser = async (user) => {
     let remoteUri = null;
 
     try {
@@ -43,7 +40,9 @@ class Fire {
         email: user.email,
         avatar: null,
         telnum: user.telnum,
-        address: user.address
+        address: user.address,
+        latitude: user.latitude,
+        longitude: user.longitude,
       });
 
       if (user.avatar) {
@@ -70,7 +69,7 @@ class Fire {
         LastName: ln,
         email: em,
         address: pw,
-        Contact: con
+        Contact: con,
       });
 
       alert("successfully added");
@@ -108,7 +107,9 @@ class Fire {
     qty2,
     qty3,
 
-    status
+    status,
+    latitude,
+    longitude
   ) {
     let db = this.firestore.collection("orders").doc(this.timestamp.toString());
     db.set({
@@ -124,13 +125,14 @@ class Fire {
       order: {
         jar_20l: qty1,
         jar_18l: qty2,
-        bottle_1l: qty3
+        bottle_1l: qty3,
       },
       status: status,
-
+      latitude: latitude,
+      longitude: longitude,
       occupied: false,
       occupiedBy: "",
-      deliveredDate: ""
+      deliveredDate: "",
     });
   }
 }

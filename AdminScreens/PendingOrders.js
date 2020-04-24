@@ -7,14 +7,15 @@ import {
   TouchableOpacity,
   ActivityIndicator,
   Modal,
-  TouchableHighlight
+  Linking,
+  TouchableHighlight,
 } from "react-native";
 import Tooltip from "react-native-walkthrough-tooltip";
 import { Header, Right, Icon, Card, CardItem, Body } from "native-base";
 import call from "react-native-phone-call";
 import Fire from "../FIre";
 import { Divider } from "react-native-elements";
-import { setPlaneDetection } from "expo/build/AR";
+import getDirections from "react-native-google-maps-directions";
 
 function PendingScreen(props) {
   const [orders, setOrders] = useState([]);
@@ -23,51 +24,94 @@ function PendingScreen(props) {
   const [id, setId] = useState("");
   const [toolTipVisible, setToolTipVisible] = useState(false);
   const [date, setDate] = useState("");
-  const makeCall = number => {
+  const [msg, setMsg] = useState("this is whatsapp");
+
+  const sendOnWhatsApp = (msg) => {
+    // let msg = msg;
+    let mobile = "9860036647";
+    if (mobile) {
+      if (msg) {
+        let url = "whatsapp://send?text=" + msg + "&phone=91" + mobile;
+        Linking.openURL(url)
+          .then((data) => {
+            console.log("WhatsApp Opened");
+          })
+          .catch(() => {
+            alert("Make sure Whatsapp installed on your device");
+          });
+      } else {
+        alert("Please insert message to send");
+      }
+    } else {
+      alert("Please insert mobile no");
+    }
+  };
+  const makeCall = (number) => {
     const args = {
       number: number,
-      prompt: false
+      prompt: false,
     };
     call(args);
   };
+  const handleGetDirections = (lat, long) => {
+    const data = {
+      destination: {
+        latitude: lat,
+        longitude: long,
+      },
+      params: [
+        {
+          key: "travelmode",
+          value: "driving", // may be "walking", "bicycling" or "transit" as well
+        },
+        {
+          key: "dir_action",
+          value: "navigate", // this instantly initializes navigation using the given travel mode
+        },
+      ],
+    };
 
+    getDirections(data);
+  };
   const handleUpdate = (id, name) => {
     let db = Fire.shared.firestore.collection("orders").doc(id);
     db.update({
       occupiedBy: name,
       occupied: true,
-      status: "delivery on progress"
+      status: "delivery on progress",
     })
-      .then(result => {
+      .then((result) => {
         alert("Successfully Assigned");
         setModalVisible(false);
       })
-      .catch(err => alert("error: ", err));
+      .catch((err) => alert("error: ", err));
   };
-  const setDelivered = id => {
+  const setDelivered = (id) => {
     let db = Fire.shared.firestore.collection("orders").doc(id);
     db.update({
       status: "delivered",
-      deliveredDate: date
+      deliveredDate: date,
     })
-      .then(result => alert("Successfully set to delivered"))
-      .catch(err => alert("error :", err));
+      .then((result) => alert("Successfully set to delivered"))
+      .catch((err) => alert("error :", err));
   };
   useEffect(() => {
     //const user = props.id || Fire.shared.uid;
-    Fire.shared.firestore.collection("orders").onSnapshot(querySnapshot => {
+    Fire.shared.firestore.collection("orders").onSnapshot((querySnapshot) => {
       const orders = [];
-      querySnapshot.forEach(doc => {
+      querySnapshot.forEach((doc) => {
         const {
           address,
           amount,
           contact,
           customer,
           date,
+          latitude,
+          longitude,
           occupiedBy,
           order,
           status,
-          time
+          time,
         } = doc.data();
         orders.push({
           id: doc.id,
@@ -76,18 +120,20 @@ function PendingScreen(props) {
           contact,
           customer,
           date,
+          latitude,
+          longitude,
           occupiedBy,
           order,
           status,
-          time
+          time,
         });
       });
       setOrders(orders);
     });
 
-    Fire.shared.firestore.collection("DeliveryBoy").onSnapshot(snapshot => {
+    Fire.shared.firestore.collection("DeliveryBoy").onSnapshot((snapshot) => {
       const users = [];
-      snapshot.forEach(doc => {
+      snapshot.forEach((doc) => {
         const { Contact, FirstName, LastName, address, email } = doc.data();
         users.push({
           id: doc.id,
@@ -95,7 +141,7 @@ function PendingScreen(props) {
           FirstName,
           LastName,
           address,
-          email
+          email,
         });
       });
       setUsers(users);
@@ -116,7 +162,7 @@ function PendingScreen(props) {
               style={{
                 fontSize: 18,
                 color: "#FFF",
-                fontWeight: "900"
+                fontWeight: "900",
                 //              marginLeft: 10
                 //textAlign: "center"
               }}
@@ -155,7 +201,7 @@ function PendingScreen(props) {
             style={{
               fontSize: 18,
               color: "#FFF",
-              fontWeight: "900"
+              fontWeight: "900",
               //              marginLeft: 10
               //textAlign: "center"
             }}
@@ -179,10 +225,10 @@ function PendingScreen(props) {
       </Header>
       <ScrollView style={{ flex: 1 }}>
         {orders
-          .filter(order => {
+          .filter((order) => {
             return order.status != "delivered";
           })
-          .map(order => {
+          .map((order) => {
             return (
               <Card style={{ borderColor: "#2183f2" }} key={order.id}>
                 <CardItem
@@ -207,7 +253,7 @@ function PendingScreen(props) {
                         style={{
                           width: 150,
                           height: 2,
-                          backgroundColor: "red"
+                          backgroundColor: "red",
                         }}
                       />
                     </Text>
@@ -259,7 +305,7 @@ function PendingScreen(props) {
                   {order.status === "delivery on progress" && (
                     <View
                       style={{
-                        flexDirection: "row"
+                        flexDirection: "row",
                       }}
                     >
                       <TouchableOpacity
@@ -283,7 +329,15 @@ function PendingScreen(props) {
                       </TouchableOpacity>
                     </View>
                   )}
-
+                  <View style={{ alignItems: "center" }}>
+                    <TouchableOpacity
+                      onPress={() =>
+                        handleGetDirections(order.latitude, order.longitude)
+                      }
+                    >
+                      <Icon type="Entypo" name="location" />
+                    </TouchableOpacity>
+                  </View>
                   <Text style={{ color: "#2183f2" }}>Rs. {order.amount}</Text>
                 </CardItem>
               </Card>
@@ -304,7 +358,7 @@ function PendingScreen(props) {
             backgroundColor: "#000000aa",
             flex: 1,
             alignItems: "center",
-            justifyContent: "center"
+            justifyContent: "center",
           }}
         >
           <View
@@ -315,11 +369,11 @@ function PendingScreen(props) {
               width: 350,
               height: 400,
               borderRadius: 5,
-              backgroundColor: "#0A3D62"
+              backgroundColor: "#0A3D62",
             }}
           >
             <ScrollView>
-              {users.map(user => (
+              {users.map((user) => (
                 <TouchableOpacity
                   key={user.email}
                   onPress={() => handleUpdate(id, user.FirstName)}
@@ -335,8 +389,8 @@ function PendingScreen(props) {
                         }}
                       >
                         <Icon
-                          name="phone-call"
-                          type="Feather"
+                          name="whatsapp"
+                          type="FontAwesome"
                           style={{ color: "green", fontSize: 24 }}
                         />
                       </TouchableOpacity>
@@ -355,6 +409,6 @@ export default PendingScreen;
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1
-  }
+    flex: 1,
+  },
 });

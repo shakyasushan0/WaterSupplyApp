@@ -8,7 +8,7 @@ import {
   TextInput,
   Dimensions,
   ActivityIndicator,
-  ScrollView
+  ScrollView,
 } from "react-native";
 import { Card, CardItem, Icon, Right, Header, Body } from "native-base";
 import call from "react-native-phone-call";
@@ -23,25 +23,25 @@ export default function WorkerScreen(props) {
   const [pword, setpword] = useState("");
   const [contact, setContact] = useState("");
   const [users, setUsers] = useState([]);
-  const makeCall = number => {
+  const makeCall = (number) => {
     const args = {
       number: number,
-      prompt: false
+      prompt: false,
     };
     call(args);
   };
-  const deleteOrder = id => {
+  const deleteOrder = (id) => {
     Fire.shared.firestore
       .collection("DeliveryBoy")
       .doc(id)
       .delete()
       .then(() => alert("deleted successfully"))
-      .catch(err => alert(err));
+      .catch((err) => alert(err));
   };
   useEffect(() => {
-    Fire.shared.firestore.collection("DeliveryBoy").onSnapshot(snapshot => {
+    Fire.shared.firestore.collection("DeliveryBoy").onSnapshot((snapshot) => {
       const users = [];
-      snapshot.forEach(doc => {
+      snapshot.forEach((doc) => {
         const { Contact, FirstName, LastName, address, email } = doc.data();
         users.push({
           id: doc.id,
@@ -49,7 +49,7 @@ export default function WorkerScreen(props) {
           FirstName,
           LastName,
           address,
-          email
+          email,
         });
       });
       setUsers(users);
@@ -65,7 +65,7 @@ export default function WorkerScreen(props) {
                 fontSize: 16,
                 color: "#FFF",
                 fontWeight: "900",
-                textAlign: "center"
+                textAlign: "center",
               }}
             >
               Delivery Boy
@@ -73,6 +73,122 @@ export default function WorkerScreen(props) {
           </Body>
         </Header>
         <ActivityIndicator size="large" />
+        <TouchableOpacity
+          style={{
+            position: "absolute",
+            bottom: 30,
+            right: 30,
+          }}
+          onPress={() => setModalVisible(true)}
+        >
+          <Icon
+            name="user-plus"
+            type="FontAwesome5"
+            style={{ color: "#2183f2" }}
+          />
+        </TouchableOpacity>
+        <Modal
+          animationType="slide"
+          transparent={true}
+          visible={modalVisible}
+          onRequestClose={() => setModalVisible(false)}
+        >
+          <View
+            style={{
+              backgroundColor: "#000000aa",
+              flex: 1,
+              alignItems: "center",
+              justifyContent: "center",
+            }}
+          >
+            <View
+              style={{
+                width: width - 60,
+                borderWidth: 1,
+                //  height: "50%",
+                borderRadius: 7,
+                backgroundColor: "white",
+                borderColor: "#2183f2",
+              }}
+            >
+              <View style={{ flexDirection: "row" }}>
+                <TextInput
+                  style={styles.textInput}
+                  placeholder="First Name"
+                  onChangeText={(fn) => setFirstName(fn)}
+                ></TextInput>
+                <TextInput
+                  style={styles.textInput}
+                  placeholder="Last Name "
+                  onChangeText={(ln) => setLastName(ln)}
+                ></TextInput>
+              </View>
+              <TextInput
+                style={{
+                  borderWidth: 1,
+                  height: 50,
+                  textAlign: "center",
+                  color: "#2183f2",
+                  borderColor: "#2183f2",
+                }}
+                placeholder="Email"
+                keyboardAppearance="dark"
+                keyboardType="email-address"
+                onChangeText={(email) => setEmail(email)}
+                keyboardType="email-address"
+                autoCapitalize="none"
+              ></TextInput>
+              <TextInput
+                style={{
+                  borderWidth: 1,
+                  height: 50,
+                  textAlign: "center",
+                  color: "#2183f2",
+                  borderColor: "#2183f2",
+                }}
+                placeholder="Address "
+                onChangeText={(pword) => setpword(pword)}
+                autoCapitalize="none"
+              ></TextInput>
+              <TextInput
+                style={{
+                  borderWidth: 1,
+                  height: 50,
+                  textAlign: "center",
+                  color: "#2183f2",
+                  borderColor: "#2183f2",
+                }}
+                placeholder="Contact No."
+                keyboardType="number-pad"
+                onChangeText={(con) => setContact(con)}
+              ></TextInput>
+            </View>
+            <View style={{ marginTop: 50 }}>
+              <TouchableOpacity
+                style={{
+                  width: 130,
+                  height: 50,
+                  backgroundColor: "#2183f2",
+                  borderRadius: 4,
+                  alignItems: "center",
+                  justifyContent: "center",
+                }}
+                onPress={() => {
+                  Fire.shared.addDeliveryBoy(
+                    firstName,
+                    lastName,
+                    email,
+                    pword,
+                    contact
+                  );
+                  setModalVisible(false);
+                }}
+              >
+                <Text>Add Delivery Boy</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        </Modal>
       </View>
     );
   }
@@ -86,7 +202,7 @@ export default function WorkerScreen(props) {
               fontSize: 16,
               color: "#FFF",
               fontWeight: "900",
-              textAlign: "center"
+              textAlign: "center",
             }}
           >
             Delivery Boy
@@ -104,7 +220,7 @@ export default function WorkerScreen(props) {
             backgroundColor: "#000000aa",
             flex: 1,
             alignItems: "center",
-            justifyContent: "center"
+            justifyContent: "center",
           }}
         >
           <View
@@ -114,19 +230,19 @@ export default function WorkerScreen(props) {
               //  height: "50%",
               borderRadius: 7,
               backgroundColor: "white",
-              borderColor: "#2183f2"
+              borderColor: "#2183f2",
             }}
           >
             <View style={{ flexDirection: "row" }}>
               <TextInput
                 style={styles.textInput}
                 placeholder="First Name"
-                onChangeText={fn => setFirstName(fn)}
+                onChangeText={(fn) => setFirstName(fn)}
               ></TextInput>
               <TextInput
                 style={styles.textInput}
                 placeholder="Last Name "
-                onChangeText={ln => setLastName(ln)}
+                onChangeText={(ln) => setLastName(ln)}
               ></TextInput>
             </View>
             <TextInput
@@ -135,12 +251,12 @@ export default function WorkerScreen(props) {
                 height: 50,
                 textAlign: "center",
                 color: "#2183f2",
-                borderColor: "#2183f2"
+                borderColor: "#2183f2",
               }}
               placeholder="Email"
               keyboardAppearance="dark"
               keyboardType="email-address"
-              onChangeText={email => setEmail(email)}
+              onChangeText={(email) => setEmail(email)}
               keyboardType="email-address"
               autoCapitalize="none"
             ></TextInput>
@@ -150,10 +266,10 @@ export default function WorkerScreen(props) {
                 height: 50,
                 textAlign: "center",
                 color: "#2183f2",
-                borderColor: "#2183f2"
+                borderColor: "#2183f2",
               }}
               placeholder="Address "
-              onChangeText={pword => setpword(pword)}
+              onChangeText={(pword) => setpword(pword)}
               autoCapitalize="none"
             ></TextInput>
             <TextInput
@@ -162,11 +278,11 @@ export default function WorkerScreen(props) {
                 height: 50,
                 textAlign: "center",
                 color: "#2183f2",
-                borderColor: "#2183f2"
+                borderColor: "#2183f2",
               }}
               placeholder="Contact No."
               keyboardType="number-pad"
-              onChangeText={con => setContact(con)}
+              onChangeText={(con) => setContact(con)}
             ></TextInput>
           </View>
           <View style={{ marginTop: 50 }}>
@@ -177,7 +293,7 @@ export default function WorkerScreen(props) {
                 backgroundColor: "#2183f2",
                 borderRadius: 4,
                 alignItems: "center",
-                justifyContent: "center"
+                justifyContent: "center",
               }}
               onPress={() => {
                 Fire.shared.addDeliveryBoy(
@@ -197,7 +313,7 @@ export default function WorkerScreen(props) {
       </Modal>
 
       <ScrollView>
-        {users.map(user => {
+        {users.map((user) => {
           return (
             <Card
               key={user.email}
@@ -249,7 +365,7 @@ export default function WorkerScreen(props) {
         style={{
           position: "absolute",
           bottom: 30,
-          right: 30
+          right: 30,
         }}
         onPress={() => setModalVisible(true)}
       >
@@ -265,7 +381,7 @@ export default function WorkerScreen(props) {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1
+    flex: 1,
   },
   textInput: {
     borderWidth: 1,
@@ -273,6 +389,6 @@ const styles = StyleSheet.create({
     height: 50,
     textAlign: "center",
     color: "#2183f2",
-    borderColor: "#2183f2"
-  }
+    borderColor: "#2183f2",
+  },
 });

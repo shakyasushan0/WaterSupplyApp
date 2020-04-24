@@ -9,7 +9,7 @@ import {
   Modal,
   TextInput,
   TouchableOpacity,
-  Alert
+  Alert,
 } from "react-native";
 
 import { Icon, Header, Right } from "native-base";
@@ -35,7 +35,7 @@ export default function InfoScreen(props) {
     Fire.shared.firestore
       .collection("users")
       .doc(user)
-      .onSnapshot(doc => {
+      .onSnapshot((doc) => {
         setUser(doc.data());
       });
 
@@ -55,20 +55,20 @@ export default function InfoScreen(props) {
       title: "Water jar",
       price: "Rs.50",
       qty: "per jar",
-      vol: "20l"
+      vol: "20l",
     },
     {
       title: "Water jar",
       price: "Rs.40",
       qty: "per jar",
-      vol: "18l"
+      vol: "18l",
     },
     {
       title: "Mineral Water Bottle",
       price: "Rs.20",
       qty: "per bottle",
-      vol: "1l"
-    }
+      vol: "1l",
+    },
   ];
   return (
     <View style={{ flex: 1 }}>
@@ -93,7 +93,7 @@ export default function InfoScreen(props) {
       </Header>
       <ScrollView style={{ flex: 1, backgroundColor: "#FFF" }}>
         <SafeAreaView style={{ flex: 1 }}>
-          {info.map(inf => {
+          {info.map((inf) => {
             return (
               <PricingCard
                 key={inf.vol}
@@ -104,12 +104,24 @@ export default function InfoScreen(props) {
                 button={{
                   title: "Order Now",
                   icon: "add",
-                  buttonStyle: { borderRadius: 4 }
+                  buttonStyle: { borderRadius: 4 },
                 }}
                 onButtonPress={() => setModalVisible(true)}
               ></PricingCard>
             );
           })}
+          <View style={{ margin: 20, marginLeft: 20 }}>
+            <Text style={{ fontSize: 32, fontWeight: "bold" }}>Contact Us</Text>
+            <Text style={{ fontSize: 20, fontWeight: "500" }}>
+              Address: Patan,Lalitpur
+            </Text>
+            <Text style={{ fontSize: 20, fontWeight: "500" }}>
+              Email: shakyasushan0@gmail.com
+            </Text>
+            <Text style={{ fontSize: 20, fontWeight: "500" }}>
+              Phone : 9860036647
+            </Text>
+          </View>
 
           <Modal
             animationType="slide"
@@ -139,7 +151,7 @@ export default function InfoScreen(props) {
                 position: "absolute",
                 bottom: 0,
                 left: 0,
-                right: 0
+                right: 0,
               }}
             >
               <Image
@@ -167,9 +179,9 @@ export default function InfoScreen(props) {
                         width: 100,
                         marginTop: 6,
                         textAlign: "center",
-                        height: 45
+                        height: 45,
                       }}
-                      onChangeText={value => setqty20l(value)}
+                      onChangeText={(value) => setqty20l(value)}
                       placeholder="Enter Quantity"
                       keyboardType="number-pad"
                     ></TextInput>
@@ -197,9 +209,9 @@ export default function InfoScreen(props) {
                         width: 100,
                         marginTop: 6,
                         textAlign: "center",
-                        height: 45
+                        height: 45,
                       }}
-                      onChangeText={value => setqty18l(value)}
+                      onChangeText={(value) => setqty18l(value)}
                       placeholder="Enter Quantity"
                       keyboardType="number-pad"
                     ></TextInput>
@@ -227,9 +239,9 @@ export default function InfoScreen(props) {
                         width: 100,
                         marginTop: 6,
                         textAlign: "center",
-                        height: 45
+                        height: 45,
                       }}
-                      onChangeText={value => setqty1l(value)}
+                      onChangeText={(value) => setqty1l(value)}
                       placeholder="Enter Quantity"
                       keyboardType="number-pad"
                     ></TextInput>
@@ -246,7 +258,7 @@ export default function InfoScreen(props) {
                     justifyContent: "center",
                     borderRadius: 7,
                     marginTop: 10,
-                    backgroundColor: "#2183f2"
+                    backgroundColor: "#2183f2",
                   }}
                   onPress={async () => {
                     if (qty20l === 0 && qty18l === 0 && qty1l === 0)
@@ -263,7 +275,9 @@ export default function InfoScreen(props) {
                         qty20l,
                         qty18l,
                         qty1l,
-                        "pending"
+                        "pending",
+                        user.latitude,
+                        user.longitude
                       );
                       alert("Thank you ! Your order has been placed");
                       setModalVisible(false);

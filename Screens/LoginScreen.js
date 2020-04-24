@@ -11,14 +11,14 @@ import {
   KeyboardAvoidingView,
   ScrollView,
   ActivityIndicator,
-  Modal
+  Modal,
 } from "react-native";
 import * as firebase from "firebase";
 //import { Icon } from "native-base";
 import { Zocial, Entypo } from "@expo/vector-icons";
 export default class LoginScreen extends React.Component {
   static navigationOptions = {
-    header: null
+    header: null,
   };
 
   state = {
@@ -26,7 +26,7 @@ export default class LoginScreen extends React.Component {
     password: "",
     errorMessage: null,
     authenticating: false,
-    isModalVisible: false
+    isModalVisible: false,
   };
 
   handleLogin = () => {
@@ -36,45 +36,13 @@ export default class LoginScreen extends React.Component {
     firebase
       .auth()
       .signInWithEmailAndPassword(email, password)
-      .catch(error => this.setState({ errorMessage: error.message }));
+      .catch((error) => this.setState({ errorMessage: error.message }));
   };
 
   renderCurrentScreen() {
     return (
-      <KeyboardAvoidingView style={styles.container} behavior="padding">
-        <Modal
-          animationType="slide"
-          transparent={true}
-          visible={this.state.isModalVisible}
-          onRequestClose={() => this.setState({ isModalVisible: false })}
-        >
-          <View
-            style={{
-              backgroundColor: "#000000aa",
-              flex: 1,
-              alignItems: "center",
-              justifyContent: "center"
-            }}
-          >
-            <View
-              style={{
-                backgroundColor: "#ffffff",
-                alignItems: "center",
-                justifyContent: "center",
-                width: 300,
-                height: 100,
-                borderRadius: 5,
-                backgroundColor: "#0A3D62"
-              }}
-            >
-              <Text style={{ color: "white", fontSize: 20 }}>
-                Authenticating please wait...
-              </Text>
-              <ActivityIndicator size="large" />
-            </View>
-          </View>
-        </Modal>
-        <ScrollView>
+      <ScrollView style={styles.container} behavior="padding">
+        <KeyboardAvoidingView>
           <StatusBar barStyle="light-content"></StatusBar>
           <Image
             source={require("../assets/authHeader1.png")}
@@ -105,14 +73,14 @@ export default class LoginScreen extends React.Component {
                   color: "#2183f2",
                   marginLeft: -100,
                   padding: 10,
-                  margin: 5
+                  margin: 5,
                 }}
               />
               <TextInput
                 style={{ backgroundColor: "white" }}
                 placeholder="Enter Your Email Here"
                 autoCapitalize="none"
-                onChangeText={email => this.setState({ email })}
+                onChangeText={(email) => this.setState({ email })}
                 value={this.state.email}
                 keyboardType="email-address"
               />
@@ -126,7 +94,7 @@ export default class LoginScreen extends React.Component {
                   color: "#2183f2",
                   marginLeft: -80,
                   padding: 10,
-                  margin: 5
+                  margin: 5,
                 }}
               />
               <TextInput
@@ -134,7 +102,7 @@ export default class LoginScreen extends React.Component {
                 placeholder="Enter Your Password Here"
                 secureTextEntry
                 autoCapitalize="none"
-                onChangeText={password => this.setState({ password })}
+                onChangeText={(password) => this.setState({ password })}
                 value={this.state.password}
               />
             </View>
@@ -155,8 +123,40 @@ export default class LoginScreen extends React.Component {
               </Text>
             </Text>
           </TouchableOpacity>
-        </ScrollView>
-      </KeyboardAvoidingView>
+          <Modal
+            animationType="slide"
+            transparent={true}
+            visible={this.state.isModalVisible}
+            onRequestClose={() => this.setState({ isModalVisible: false })}
+          >
+            <View
+              style={{
+                backgroundColor: "#000000aa",
+                flex: 1,
+                alignItems: "center",
+                justifyContent: "center",
+              }}
+            >
+              <View
+                style={{
+                  backgroundColor: "#ffffff",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  width: 300,
+                  height: 100,
+                  borderRadius: 5,
+                  backgroundColor: "#0A3D62",
+                }}
+              >
+                <Text style={{ color: "white", fontSize: 20 }}>
+                  Authenticating please wait...
+                </Text>
+                <ActivityIndicator size="large" />
+              </View>
+            </View>
+          </Modal>
+        </KeyboardAvoidingView>
+      </ScrollView>
     );
   }
 
@@ -169,29 +169,29 @@ export default class LoginScreen extends React.Component {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1
+    flex: 1,
   },
   greeting: {
     marginTop: -32,
     fontSize: 18,
     fontWeight: "400",
-    textAlign: "center"
+    textAlign: "center",
   },
   form: {
     marginBottom: 48,
-    marginHorizontal: 18
+    marginHorizontal: 18,
   },
   inputTitle: {
     color: "#8A8F9E",
     fontSize: 10,
-    textTransform: "uppercase"
+    textTransform: "uppercase",
   },
   input: {
     borderBottomColor: "#8A8F9E",
     borderBottomWidth: StyleSheet.hairlineWidth,
     height: 40,
     fontSize: 15,
-    color: "#161F3D"
+    color: "#161F3D",
   },
   button: {
     marginHorizontal: 30,
@@ -199,23 +199,23 @@ const styles = StyleSheet.create({
     borderRadius: 7,
     height: 52,
     alignItems: "center",
-    justifyContent: "center"
+    justifyContent: "center",
   },
   errorMessage: {
     height: 72,
     alignItems: "center",
     justifyContent: "center",
-    marginHorizontal: 30
+    marginHorizontal: 30,
   },
   error: {
     color: "#E9446A",
     fontSize: 13,
     fontWeight: "600",
-    textAlign: "center"
+    textAlign: "center",
   },
   lottie: {
     width: 100,
-    height: 100
+    height: 100,
   },
   SectionStyle: {
     flexDirection: "row",
@@ -226,7 +226,7 @@ const styles = StyleSheet.create({
     borderColor: "#000",
     height: 52,
     borderRadius: 5,
-    margin: 10
+    margin: 10,
   },
 
   ImageStyle: {
@@ -235,6 +235,6 @@ const styles = StyleSheet.create({
     height: 25,
     width: 25,
     resizeMode: "stretch",
-    alignItems: "center"
-  }
+    alignItems: "center",
+  },
 });

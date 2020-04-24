@@ -4,15 +4,15 @@ import * as firebase from "firebase";
 
 export default function LoadingScreen(props) {
   useEffect(() => {
-    firebase.auth().onAuthStateChanged(user => {
+    firebase.auth().onAuthStateChanged((user) => {
       // props.navigation.navigate(user ? "Main" : "Auth");
-      if (user && user.uid === "GpL4uAumQrYJmQiE2hqMtG3pMxP2") {
+      if (user && user.uid === "cxz9tVnmwgbV8oUwmbz3gUqcW8t2") {
         props.navigation.navigate("Admin");
-      } else if (user && user.uid != "GpL4uAumQrYJmQiE2hqMtG3pMxP2")
+      } else if (user && user.uid != "cxz9tVnmwgbV8oUwmbz3gUqcW8t2")
         props.navigation.navigate("Main");
       else if (
         user &&
-        user.uid != "GpL4uAumQrYJmQiE2hqMtG3pMxP2" &&
+        user.uid != "cxz9tVnmwgbV8oUwmbz3gUqcW8t2" &&
         user.displayName === "delivery boy"
       )
         props.navigation.navigate("DeliveryBoy");
