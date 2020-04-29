@@ -4,8 +4,9 @@ import MainNavigation from "./Navigation/MainStack";
 import FirebaseKey from "./firebaseConfig";
 import "./fixtimerbug";
 import * as firebase from "firebase";
-firebase.initializeApp(FirebaseKey);
 
+firebase.initializeApp(FirebaseKey);
+console.disableYellowBox = true;
 export default function App() {
   return <MainNavigation />;
 }
@@ -15,6 +16,6 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "#fff",
     alignItems: "center",
-    justifyContent: "center"
-  }
+    justifyContent: "center",
+  },
 });

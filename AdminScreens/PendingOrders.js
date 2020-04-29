@@ -29,6 +29,7 @@ function PendingScreen(props) {
   const [ord, setOrd] = useState({});
   const [lat, setLat] = useState(null);
   const [long, setLong] = useState(null);
+  const [total, setTotal] = useState(0);
 
   const sendOnWhatsApp = (msg, mobile) => {
     // let msg = msg;
@@ -77,7 +78,7 @@ function PendingScreen(props) {
 
     getDirections(data);
   };
-  const handleUpdate = async (id, name, cust, ord, lat, long, mob) => {
+  const handleUpdate = async (id, name, cust, ord, amt, lat, long, mob) => {
     let db = Fire.shared.firestore.collection("orders").doc(id);
     await db
       .update({
@@ -92,9 +93,9 @@ function PendingScreen(props) {
       .catch((err) => alert("error: ", err));
 
     sendOnWhatsApp(
-      `You have been assingned new order, ***Customer:${cust}***orders:${JSON.stringify(
+      `You have been assingned new order, ***Customer ==> ${cust}***orders ==> ${JSON.stringify(
         ord
-      )}***Location:${lat},${long}***   `,
+      )} ***Amount ==> ${amt}***Location ==> ${lat},${long}***   `,
       mob
     );
   };
@@ -308,6 +309,7 @@ function PendingScreen(props) {
                         setOrd(order.order);
                         setLat(order.latitude);
                         setLong(order.longitude);
+                        setTotal(order.amount);
                       }}
                     >
                       <Icon
@@ -398,6 +400,7 @@ function PendingScreen(props) {
                       user.FirstName,
                       custName,
                       ord,
+                      total,
                       lat,
                       long,
                       user.Contact
@@ -415,8 +418,8 @@ function PendingScreen(props) {
                         }}
                       >
                         <Icon
-                          name="whatsapp"
-                          type="FontAwesome"
+                          name="phone"
+                          type="Feather"
                           style={{ color: "green", fontSize: 24 }}
                         />
                       </TouchableOpacity>

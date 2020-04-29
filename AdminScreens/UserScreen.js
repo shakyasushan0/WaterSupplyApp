@@ -6,9 +6,12 @@ import {
   Image,
   ScrollView,
   Modal,
-  ActivityIndicator
+  ActivityIndicator,
+  PanResponder,
 } from "react-native";
-import { Card, CardItem, Icon, Right, Header, Body } from "native-base";
+import * as Animatable from "react-native-animatable";
+import { Icon, Right, Header, Body } from "native-base";
+import { Card } from "react-native-elements";
 import Fire from "../FIre";
 import call from "react-native-phone-call";
 
@@ -16,25 +19,25 @@ function UserScreen(props) {
   const [users, setUsers] = useState([]);
   const [modalVisible, setModalVisible] = useState(false);
   const [orders, setOrders] = useState([]);
-  const makeCall = number => {
+  const makeCall = (number) => {
     const args = {
       number: number,
-      prompt: false
+      prompt: false,
     };
     call(args);
   };
 
   useEffect(() => {
-    Fire.shared.firestore.collection("users").onSnapshot(snapshot => {
+    Fire.shared.firestore.collection("users").onSnapshot((snapshot) => {
       const users = [];
-      snapshot.forEach(doc => {
+      snapshot.forEach((doc) => {
         const { address, avatar, email, name, telnum } = doc.data();
         users.push({
           address,
           avatar,
           email,
           name,
-          telnum
+          telnum,
         });
       });
       setUsers(users);
@@ -51,7 +54,7 @@ function UserScreen(props) {
                 fontSize: 16,
                 color: "#FFF",
                 fontWeight: "900",
-                textAlign: "center"
+                textAlign: "center",
               }}
             >
               Users
@@ -74,7 +77,7 @@ function UserScreen(props) {
               fontSize: 16,
               color: "#FFF",
               fontWeight: "900",
-              textAlign: "center"
+              textAlign: "center",
             }}
           >
             Users
@@ -82,11 +85,33 @@ function UserScreen(props) {
         </Body>
       </Header>
       <ScrollView>
-        {users.map(user => {
+        {users.map((user) => {
+          const recognizeDrag = ({ moveX, moveY, dx, dy }) => {
+            if (dx < -200) return true;
+            else return false;
+          };
+          const panResponder = PanResponder.create({
+            onStartShouldSetPanResponder: (e, gestureState) => {
+              return true;
+            },
+
+            onPanResponderEnd: (e, gestureState) => {
+              console.log("pan responder end", gestureState);
+              if (recognizeDrag(gestureState)) {
+                makeCall(user.telnum);
+              }
+
+              return true;
+            },
+          });
           return (
-            <View key={user.telnum}>
-              <TouchableOpacity>
-                <Card style={{ borderRadius: 10 }}>
+            <View key={user.telnum} {...panResponder.panHandlers}>
+              <Card
+                image={{ uri: user.avatar }}
+                featuredTitle={user.name}
+                featuredSubtitle={user.address}
+              />
+              {/* <Card style={{ borderRadius: 10 }}>
                   <CardItem>
                     <Image
                       source={{ uri: user.avatar }}
@@ -112,8 +137,7 @@ function UserScreen(props) {
                       </TouchableOpacity>
                     </Right>
                   </CardItem>
-                </Card>
-              </TouchableOpacity>
+                </Card> */}
             </View>
           );
         })}

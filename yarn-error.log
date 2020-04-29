@@ -1,30 +1,21 @@
 Arguments: 
-  /usr/bin/node /usr/bin/yarn add @expo/vector-icons/Fontisto
+  /usr/bin/node /usr/share/yarn/bin/yarn.js add react-native-animatable
 
 PATH: 
-  /home/sushan/.local/bin:${PATH}:/home/sushan/flutter/bin:/usr/local/sbin:/usr/local/bin:/usr/bin:/usr/lib/jvm/default/bin:/usr/bin/site_perl:/usr/bin/vendor_perl:/usr/bin/core_perl:/var/lib/snapd/snap/bin:/home/sushan/flutter/bin:/home/sushan/node/bin:/home/sushan/Android/Sdk/emulator:/home/sushan/Android/Sdk/tools:/home/sushan/Android/Sdk/tools/bin:/home/sushan/Android/Sdk/platform-tools
+  /usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin
 
 Yarn version: 
-  1.21.0
+  1.22.4
 
 Node version: 
-  13.3.0
+  13.13.0
 
 Platform: 
   linux x64
 
 Trace: 
-  Error: https://registry.yarnpkg.com/@expo%2fvector-icons/Fontisto: Request "https://registry.yarnpkg.com/@expo%2fvector-icons/Fontisto" returned a 405
-      at Request.params.callback [as _callback] (/usr/lib/node_modules/yarn/lib/cli.js:66947:18)
-      at Request.self.callback (/usr/lib/node_modules/yarn/lib/cli.js:140622:22)
-      at Request.emit (events.js:219:5)
-      at Request.<anonymous> (/usr/lib/node_modules/yarn/lib/cli.js:141594:10)
-      at Request.emit (events.js:219:5)
-      at IncomingMessage.<anonymous> (/usr/lib/node_modules/yarn/lib/cli.js:141516:12)
-      at Object.onceWrapper (events.js:308:28)
-      at IncomingMessage.emit (events.js:224:7)
-      at endReadableNT (_stream_readable.js:1206:12)
-      at processTicksAndRejections (internal/process/task_queues.js:84:21)
+  Error: getaddrinfo EAI_AGAIN registry.yarnpkg.com
+      at GetAddrInfoReqWrap.onlookup [as oncomplete] (dns.js:66:26)
 
 npm manifest: 
   {
@@ -37,23 +28,27 @@ npm manifest:
       "eject": "expo eject"
     },
     "dependencies": {
-      "@expo/vector-icons": "^10.0.6",
       "@react-native-community/masked-view": "^0.1.7",
+      "@react-native-community/slider": "^2.0.9",
       "expo": "~36.0.0",
       "expo-image-picker": "^8.0.2",
       "expo-linear-gradient": "^8.0.0",
-      "expo-location": "^8.0.0",
-      "expo-permissions": "^8.0.0",
+      "expo-location": "^8.1.0",
+      "expo-permissions": "^8.1.0",
       "firebase": "7.7.0",
-      "native-base": "^2.13.12",
+      "native-base": "2.13.8",
       "react": "~16.9.0",
       "react-dom": "~16.9.0",
       "react-native": "https://github.com/expo/react-native/archive/sdk-36.0.0.tar.gz",
       "react-native-elements": "^1.2.7",
       "react-native-gesture-handler": "^1.6.1",
+      "react-native-google-maps-directions": "^2.1.1",
+      "react-native-phone-call": "^1.0.9",
       "react-native-reanimated": "^1.7.0",
       "react-native-safe-area-context": "^0.7.3",
       "react-native-screens": "^2.4.0",
+      "react-native-sms": "^1.11.0",
+      "react-native-walkthrough-tooltip": "^1.1.7",
       "react-native-web": "~0.11.7",
       "react-navigation": "^4.3.3",
       "react-navigation-drawer": "^2.4.7",
@@ -1007,7 +1002,7 @@ Lockfile:
     dependencies:
       "@types/hammerjs" "^2.0.36"
   
-  "@expo/vector-icons@^10.0.2", "@expo/vector-icons@^10.0.6":
+  "@expo/vector-icons@^10.0.2":
     version "10.0.6"
     resolved "https://registry.yarnpkg.com/@expo/vector-icons/-/vector-icons-10.0.6.tgz#5718953ff0b97827d11dae5787976fa8ce5caaed"
     integrity sha512-qNlKPNdf073LpeEpyClxAh0D3mmIK4TGAQzeKR0HVwf14RIEe17+mLW5Z6Ka5Ho/lUtKMRPDHumSllFyKvpeGg==
@@ -1490,6 +1485,11 @@ Lockfile:
     version "0.1.7"
     resolved "https://registry.yarnpkg.com/@react-native-community/masked-view/-/masked-view-0.1.7.tgz#a65ce0702f55cb67fd777995de6fc7b3e5781903"
     integrity sha512-9KbP7LTLFz9dx1heURJbO6nuVMdSjDez8znlrUzaB1nUwKVsTTwlKRuHxGUYIIkReLWrJQeCv9tidy+84z2eCw==
+  
+  "@react-native-community/slider@^2.0.9":
+    version "2.0.9"
+    resolved "https://registry.yarnpkg.com/@react-native-community/slider/-/slider-2.0.9.tgz#bf74045c96f1fb22e3ec961e321300c230c63990"
+    integrity sha512-6GHUKXxiDSs75VZQRa6B+nxo8rqpIEcegZ1iCSQG4aW2oSVepceqDol+0y3/KaBt5WMpD4KybLw8ZZqkT6olaQ==
   
   "@react-navigation/core@^3.7.1":
     version "3.7.1"
@@ -2878,17 +2878,29 @@ Lockfile:
     resolved "https://registry.yarnpkg.com/expo-linear-gradient/-/expo-linear-gradient-8.0.0.tgz#972d33e92714d4a4485635683b5bfa357ecec41b"
     integrity sha512-5G3ePGAHUoyBWbGITw5RtdJpssH8TXhCgt55cV+5LTTFjr51OZcuOmGua1vRoVFKBC/9ibLW465GEx9H/HS07Q==
   
-  expo-location@^8.0.0, expo-location@~8.0.0:
+  expo-location@^8.1.0:
+    version "8.1.0"
+    resolved "https://registry.yarnpkg.com/expo-location/-/expo-location-8.1.0.tgz#6a71ad9a8b78d5f016a30a02013c3b28f46d0b1b"
+    integrity sha512-G9JvsK1t9Z5Iybf+FCG81Jgm9Ee9leqpazxOPVabUJEWu/55Iex3yLGX04BuIA4ozAlJKBPzkhPdyqKdC7zrSw==
+    dependencies:
+      invariant "^2.2.4"
+  
+  expo-location@~8.0.0:
     version "8.0.0"
     resolved "https://registry.yarnpkg.com/expo-location/-/expo-location-8.0.0.tgz#58dd54e47b12e26f9f2a97ded3cd15f8fa959b85"
     integrity sha512-48i4dUCaqPTwSri79yummKwg6vE6loI7d4iHCrbG4EEuN3fhS8I9xU60CEkoNZTziH9zK0iw4KSjr7DbXUAaCw==
     dependencies:
       invariant "^2.2.4"
   
-  expo-permissions@*, expo-permissions@^8.0.0, expo-permissions@~8.0.0:
+  expo-permissions@*, expo-permissions@~8.0.0:
     version "8.0.0"
     resolved "https://registry.yarnpkg.com/expo-permissions/-/expo-permissions-8.0.0.tgz#5a45e8451dd7ff37c9e6ce5e2447818372547813"
     integrity sha512-GHTRmwh1rd1b0FcibluPFu93NNQyl9b1anBBDVPmomoo9Prz7kDcO5p2hFqM99r896yvAUSe0fPloPKUq4g/1A==
+  
+  expo-permissions@^8.1.0:
+    version "8.1.0"
+    resolved "https://registry.yarnpkg.com/expo-permissions/-/expo-permissions-8.1.0.tgz#a7f2ee91ba76ce3a467e7b10adaa9ca5201b226f"
+    integrity sha512-QBHD+1J9+sGFnhoEGzMRchPweeEE0OJ9ehG/0l1BMRBA7qsLS9vRC1FTJ55NwjI0Kr4RTha9r6ZX1kZHT09f/w==
   
   expo-sqlite@~8.0.0:
     version "8.0.0"
@@ -4495,10 +4507,10 @@ Lockfile:
       lodash "^4.17.14"
       prop-types "^15.5.10"
   
-  native-base@^2.13.12:
-    version "2.13.12"
-    resolved "https://registry.yarnpkg.com/native-base/-/native-base-2.13.12.tgz#06020b46019964ddaef3a646ec07e72008018efc"
-    integrity sha512-LdKGNXisbmQ0vDHG86McZKIFTlRyo+OQdJpqmQ05Yf7CGlMbBykJZCFe9rdiee5pLq20xiChe/jXbzFdWcysrg==
+  native-base@2.13.8:
+    version "2.13.8"
+    resolved "https://registry.yarnpkg.com/native-base/-/native-base-2.13.8.tgz#817dfaf74ec63cd17f48991fab452fdc75103db9"
+    integrity sha512-47Wm7bjH5Dc99gBUeVvsURyADU97aiLMLPGX4ewPgR9kW47TD9slS/Y5vGMToBgz1bsku9anXgN2T1rpdQbpFA==
     dependencies:
       blueimp-md5 "^2.5.0"
       clamp "^1.0.1"
@@ -5209,6 +5221,11 @@ Lockfile:
       prop-types "^15.6.2"
       scheduler "^0.15.0"
   
+  react-fast-compare@^2.0.4:
+    version "2.0.4"
+    resolved "https://registry.yarnpkg.com/react-fast-compare/-/react-fast-compare-2.0.4.tgz#e84b4d455b0fec113e0402c329352715196f81f9"
+    integrity sha512-suNP+J1VU1MWFKcyt7RtjiSWUjvidmQSlqu+eHslq+342xCbGTYmC0mEhPCOHxlW0CywylOC1u2DFAT+bv4dBw==
+  
   react-is@^16.12.0, react-is@^16.13.0, react-is@^16.7.0, react-is@^16.8.1, react-is@^16.8.4, react-is@^16.9.0:
     version "16.13.1"
     resolved "https://registry.yarnpkg.com/react-is/-/react-is-16.13.1.tgz#789729a4dc36de2999dc156dd6c1d9c18cea56a4"
@@ -5258,6 +5275,11 @@ Lockfile:
       invariant "^2.2.4"
       prop-types "^15.7.2"
   
+  react-native-google-maps-directions@^2.1.1:
+    version "2.1.1"
+    resolved "https://registry.yarnpkg.com/react-native-google-maps-directions/-/react-native-google-maps-directions-2.1.1.tgz#d27c38508174bd4009adebc1517eff852901c13b"
+    integrity sha512-hsq2T3cJsZZ31akEq08nBCdRlYQ+o+07R7wTb9QclrTQHJRIKR78mI9lgizOpKm4NFSYUOxGtbL7LfhJw1OANQ==
+  
   react-native-iphone-x-helper@^1.0.3, react-native-iphone-x-helper@^1.2.1:
     version "1.2.1"
     resolved "https://registry.yarnpkg.com/react-native-iphone-x-helper/-/react-native-iphone-x-helper-1.2.1.tgz#645e2ffbbb49e80844bb4cbbe34a126fda1e6772"
@@ -5270,6 +5292,11 @@ Lockfile:
     dependencies:
       prop-types "^15.6.2"
       react-native-iphone-x-helper "^1.0.3"
+  
+  react-native-phone-call@^1.0.9:
+    version "1.0.9"
+    resolved "https://registry.yarnpkg.com/react-native-phone-call/-/react-native-phone-call-1.0.9.tgz#4468ec6f95856557fbff9bd69a0db04b54c35e1d"
+    integrity sha512-OPWYg8qeWNG/U4bWGMAKcQTH/ifqJnsvUPCH4lOkvWFHbQS3fbH5M8rFhXCzcfS0GVNzHhZX9ZByMM368TFAUQ==
   
   react-native-ratings@^6.3.0:
     version "6.5.0"
@@ -5303,6 +5330,11 @@ Lockfile:
     dependencies:
       debounce "^1.2.0"
   
+  react-native-sms@^1.11.0:
+    version "1.11.0"
+    resolved "https://registry.yarnpkg.com/react-native-sms/-/react-native-sms-1.11.0.tgz#02e191ef35fae163d7fae1f78f42f202c33f8c9e"
+    integrity sha512-G5q61qGknNyftN1cFkXfH46UkQWMf3fy/M1fxK/QJzLDJAgCSeBqge62FgJClw1FqzYGSjZeoZvkgpWGDCd3wQ==
+  
   react-native-status-bar-height@^2.2.0:
     version "2.5.0"
     resolved "https://registry.yarnpkg.com/react-native-status-bar-height/-/react-native-status-bar-height-2.5.0.tgz#bc0fb85230603850aab9667ee8111a62954de90c"
@@ -5326,6 +5358,14 @@ Lockfile:
     version "3.0.2"
     resolved "https://registry.yarnpkg.com/react-native-view-shot/-/react-native-view-shot-3.0.2.tgz#daccaec5b8038a680b17533ff7e72876e68c7d0d"
     integrity sha512-JZOkGo2jzSX2b7N6N2uDr0wQjSz+QmBtY8jzeo0XJY6bLOfaY5nmWyYxDmDRoSpKiFkGTCkyhUqNnjo6lXOtEw==
+  
+  react-native-walkthrough-tooltip@^1.1.7:
+    version "1.1.7"
+    resolved "https://registry.yarnpkg.com/react-native-walkthrough-tooltip/-/react-native-walkthrough-tooltip-1.1.7.tgz#972ce320bee617cfe959690cec6d7239f5bbb52a"
+    integrity sha512-kgN6mokMUtAVTq1qJJjf4SAEujK+A4bZbpkMykoURpzRQuUU7UlHJ/7k8LA7DRTI3sg1Pn0qaDWxDZHgil6I3w==
+    dependencies:
+      prop-types "^15.6.1"
+      react-fast-compare "^2.0.4"
   
   react-native-web@~0.11.7:
     version "0.11.7"
