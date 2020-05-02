@@ -8,12 +8,15 @@ import {
   Modal,
   ActivityIndicator,
   PanResponder,
+  Alert,
 } from "react-native";
 import * as Animatable from "react-native-animatable";
 import { Icon, Right, Header, Body } from "native-base";
 import { Card } from "react-native-elements";
 import Fire from "../FIre";
 import call from "react-native-phone-call";
+import Swipeout from "react-native-swipeout";
+import * as MailComposer from "expo-mail-composer";
 
 function UserScreen(props) {
   const [users, setUsers] = useState([]);
@@ -43,6 +46,12 @@ function UserScreen(props) {
       setUsers(users);
     });
   }, []);
+  const sendMail = (email) => {
+    MailComposer.composeAsync({
+      recipients: [email],
+      body: "Dear user, ",
+    });
+  };
 
   if (users.length === 0) {
     return (
@@ -74,71 +83,87 @@ function UserScreen(props) {
         <Body style={{ alignItems: "center" }}>
           <Text
             style={{
-              fontSize: 16,
+              fontSize: 18,
               color: "#FFF",
               fontWeight: "900",
-              textAlign: "center",
+              //              marginLeft: 10
+              //textAlign: "center"
             }}
           >
             Users
           </Text>
         </Body>
+        <Right>
+          <TouchableOpacity
+            style={{ margin: 16 }}
+            onPress={props.navigation.openDrawer}
+          >
+            <Icon
+              type="FontAwesome"
+              name="bars"
+              size={24}
+              color="#161924"
+            ></Icon>
+          </TouchableOpacity>
+        </Right>
       </Header>
       <ScrollView>
         {users.map((user) => {
-          const recognizeDrag = ({ moveX, moveY, dx, dy }) => {
-            if (dx < -200) return true;
-            else return false;
-          };
-          const panResponder = PanResponder.create({
-            onStartShouldSetPanResponder: (e, gestureState) => {
-              return true;
+          var swipeOutButtons = [
+            {
+              component: (
+                <View
+                  style={{
+                    flex: 1,
+                    alignItems: "center",
+                    justifyContent: "center",
+                    flexDirection: "column",
+                  }}
+                >
+                  <Icon
+                    name="gmail"
+                    type="MaterialCommunityIcons"
+                    style={{ fontSize: 40 }}
+                  />
+                </View>
+              ),
+              backgroundColor: "#F4C724",
+              onPress: () => sendMail(user.email),
             },
-
-            onPanResponderEnd: (e, gestureState) => {
-              console.log("pan responder end", gestureState);
-              if (recognizeDrag(gestureState)) {
-                makeCall(user.telnum);
-              }
-
-              return true;
+            {
+              component: (
+                <View
+                  style={{
+                    flex: 1,
+                    alignItems: "center",
+                    justifyContent: "center",
+                    flexDirection: "column",
+                  }}
+                >
+                  <Icon
+                    name="phone"
+                    type="AntDesign"
+                    style={{ fontSize: 36 }}
+                  />
+                </View>
+              ),
+              backgroundColor: "#2ecc72",
+              onPress: () => makeCall(user.telnum),
             },
-          });
+          ];
+
           return (
-            <View key={user.telnum} {...panResponder.panHandlers}>
+            <Swipeout
+              right={swipeOutButtons}
+              autoClose={true}
+              key={user.telnum}
+            >
               <Card
                 image={{ uri: user.avatar }}
                 featuredTitle={user.name}
                 featuredSubtitle={user.address}
               />
-              {/* <Card style={{ borderRadius: 10 }}>
-                  <CardItem>
-                    <Image
-                      source={{ uri: user.avatar }}
-                      style={{ width: 100, height: 100 }}
-                    ></Image>
-                    <View style={{ flexDirection: "column", marginLeft: 10 }}>
-                      <Text>{user.name}</Text>
-                      <Text>{user.email}</Text>
-                      <Text>{user.address}</Text>
-                      <Text>{user.telnum}</Text>
-                    </View>
-                    <Right>
-                      <TouchableOpacity
-                        onPress={() => {
-                          makeCall(user.telnum);
-                        }}
-                      >
-                        <Icon
-                          name="phone-call"
-                          type="Feather"
-                          style={{ color: "green", fontSize: 24 }}
-                        />
-                      </TouchableOpacity>
-                    </Right>
-                  </CardItem>
-                </Card> */}
-            </View>
+            </Swipeout>
           );
         })}
       </ScrollView>

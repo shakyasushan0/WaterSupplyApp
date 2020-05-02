@@ -199,15 +199,29 @@ export default function WorkerScreen(props) {
         <Body style={{ alignItems: "center" }}>
           <Text
             style={{
-              fontSize: 16,
+              fontSize: 18,
               color: "#FFF",
               fontWeight: "900",
-              textAlign: "center",
+              //              marginLeft: 10
+              //textAlign: "center"
             }}
           >
             Delivery Boy
           </Text>
         </Body>
+        <Right>
+          <TouchableOpacity
+            style={{ margin: 16 }}
+            onPress={props.navigation.openDrawer}
+          >
+            <Icon
+              type="FontAwesome"
+              name="bars"
+              size={24}
+              color="#161924"
+            ></Icon>
+          </TouchableOpacity>
+        </Right>
       </Header>
       <Modal
         animationType="slide"

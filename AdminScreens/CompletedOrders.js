@@ -4,18 +4,18 @@ import {
   Text,
   ScrollView,
   ActivityIndicator,
-  TouchableOpacity
+  TouchableOpacity,
 } from "react-native";
-import { Card, CardItem, Header, Body, Icon } from "native-base";
+import { Card, CardItem, Header, Body, Icon, Right } from "native-base";
 import { Divider } from "react-native-elements";
 import Fire from "../FIre";
-const deleteOrder = id => {
+const deleteOrder = (id) => {
   Fire.shared.firestore
     .collection("orders")
     .doc(id)
     .delete()
     .then(() => alert("deleted successfully"))
-    .catch(err => alert(err));
+    .catch((err) => alert(err));
 };
 export default function CompletedScreen(props) {
   const [orders, setOrders] = useState([]);
@@ -25,9 +25,9 @@ export default function CompletedScreen(props) {
       .collection("orders")
       // .where("userId", "==", user)
       .where("status", "==", "delivered")
-      .onSnapshot(querySnapshot => {
+      .onSnapshot((querySnapshot) => {
         const orders = [];
-        querySnapshot.forEach(doc => {
+        querySnapshot.forEach((doc) => {
           const {
             address,
             amount,
@@ -37,7 +37,7 @@ export default function CompletedScreen(props) {
             deliveredDate,
             order,
             status,
-            time
+            time,
           } = doc.data();
           orders.push({
             id: doc.id,
@@ -49,7 +49,7 @@ export default function CompletedScreen(props) {
             deliveredDate,
             order,
             status,
-            time
+            time,
           });
         });
         setOrders(orders);
@@ -65,7 +65,7 @@ export default function CompletedScreen(props) {
                 fontSize: 16,
                 color: "#FFF",
                 fontWeight: "900",
-                textAlign: "center"
+                textAlign: "center",
               }}
             >
               Completed Orders
@@ -86,18 +86,32 @@ export default function CompletedScreen(props) {
           <Body style={{ alignItems: "center" }}>
             <Text
               style={{
-                fontSize: 16,
+                fontSize: 18,
                 color: "#FFF",
                 fontWeight: "900",
-                textAlign: "center"
+                //              marginLeft: 10
+                //textAlign: "center"
               }}
             >
               Completed Orders
             </Text>
           </Body>
+          <Right>
+            <TouchableOpacity
+              style={{ margin: 16 }}
+              onPress={props.navigation.openDrawer}
+            >
+              <Icon
+                type="FontAwesome"
+                name="bars"
+                size={24}
+                color="#161924"
+              ></Icon>
+            </TouchableOpacity>
+          </Right>
         </Header>
         <ScrollView style={{ flex: 1 }}>
-          {orders.map(order => {
+          {orders.map((order) => {
             return (
               <Card style={{ borderColor: "green" }} key={order.id}>
                 <CardItem
@@ -122,7 +136,7 @@ export default function CompletedScreen(props) {
                         style={{
                           width: 150,
                           height: 2,
-                          backgroundColor: "red"
+                          backgroundColor: "red",
                         }}
                       />
                     </Text>
