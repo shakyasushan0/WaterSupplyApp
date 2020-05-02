@@ -24,7 +24,7 @@ class Fire {
       );
     });
   };
-  createUser = async (user) => {
+  createUser = async (user, branch) => {
     let remoteUri = null;
 
     try {
@@ -43,6 +43,7 @@ class Fire {
         address: user.address,
         latitude: user.latitude,
         longitude: user.longitude,
+        branch,
       });
 
       if (user.avatar) {

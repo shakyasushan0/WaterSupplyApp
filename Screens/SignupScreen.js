@@ -11,6 +11,7 @@ import {
   ScrollView,
   ActivityIndicator,
   Modal,
+  Picker,
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import UserPermissions from "../utilities/UserPermissions";
@@ -41,6 +42,8 @@ export default class RegisterScreen extends React.Component {
       errorMessage: null,
       authenticating: false,
       isModalVisible: false,
+      branchLocation: [],
+      branch: "",
     };
     this._getLocationAsync();
   }
@@ -64,6 +67,17 @@ export default class RegisterScreen extends React.Component {
     this.setState({ user: { ...this.state.user, longitude } });
   };
 
+  componentDidMount() {
+    Fire.shared.firestore.collection("Branches").onSnapshot((querySnapshot) => {
+      const branchLocation = [];
+      querySnapshot.forEach((doc) => {
+        const { Id, name, password } = doc.data();
+        branchLocation.push({ Id, name, password });
+      });
+      this.setState({ branchLocation });
+    });
+  }
+
   handleSignUp = () => {
     const { name, email, password, avatar, telnum, address } = this.state.user;
     var regx1 = /^[9][0-9]{9}$/;
@@ -82,7 +96,7 @@ export default class RegisterScreen extends React.Component {
       alert("Your password must have atleast 6 characters");
     } else {
       this.setState({ authenticating: true, isModalVisible: true });
-      Fire.shared.createUser(this.state.user);
+      Fire.shared.createUser(this.state.user, this.state.branch);
     }
   };
 
@@ -250,6 +264,34 @@ export default class RegisterScreen extends React.Component {
                 }
                 value={this.state.user.address}
               ></TextInput>
+            </View>
+            <View
+              style={{
+                alignItems: "center",
+                justifyContent: "center",
+                flex: 1,
+                flexDirection: "row",
+                margin: 25,
+              }}
+            >
+              <Text style={styles.inputTitle}>Select your nearby location</Text>
+
+              <Picker
+                selectedValue={this.state.branch}
+                style={{
+                  height: 50,
+                  width: 150,
+
+                  fontSize: 14,
+                }}
+                onValueChange={(itemValue, itemIndex) =>
+                  this.setState({ branch: itemValue })
+                }
+              >
+                {this.state.branchLocation.map((branch) => (
+                  <Picker.Item label={branch.name} value={branch.name} />
+                ))}
+              </Picker>
             </View>
           </View>
 
