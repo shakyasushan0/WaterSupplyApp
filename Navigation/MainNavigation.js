@@ -6,6 +6,7 @@ import InfoScreen from "../Screens/infoScreen";
 import PastOrder from "../Screens/pastOrderScreen";
 import CompletedOrder from "../Screens/completedOrderScreen";
 import Profile from "../Screens/profile";
+import Contact from "../Screens/ContactScreen";
 
 import { Icon } from "native-base";
 const myDrawerNvigator = createDrawerNavigator(
@@ -16,8 +17,8 @@ const myDrawerNvigator = createDrawerNavigator(
         title: "Info",
         drawerIcon: ({ tintColor }) => (
           <Icon type="Entypo" name="info" size={16} color={tintColor} />
-        )
-      }
+        ),
+      },
     },
     PastOrder: {
       screen: PastOrder,
@@ -25,8 +26,8 @@ const myDrawerNvigator = createDrawerNavigator(
         title: "Pending Orders",
         drawerIcon: ({ tintColor }) => (
           <Icon type="Feather" name="file-minus" size={16} color={tintColor} />
-        )
-      }
+        ),
+      },
     },
     CompletedOrder: {
       screen: CompletedOrder,
@@ -39,12 +40,27 @@ const myDrawerNvigator = createDrawerNavigator(
             size={16}
             color={tintColor}
           />
-        )
-      }
-    }
+        ),
+      },
+    },
+    ContactScreen: {
+      screen: Contact,
+      navigationOptions: {
+        title: "Contact Us",
+        drawerIcon: ({ tintColor }) => (
+          <Icon
+            type="FontAwesome"
+            name="address-card"
+            // size={16}
+            color={tintColor}
+          />
+        ),
+      },
+    },
   },
+
   {
-    contentComponent: props => <Profile {...props} />
+    contentComponent: (props) => <Profile {...props} />,
   }
 );
 export default createAppContainer(myDrawerNvigator);

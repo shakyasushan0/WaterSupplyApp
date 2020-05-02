@@ -1,6 +1,12 @@
 import React, { useState, useEffect } from "react";
-import { View, Text, ScrollView, ActivityIndicator } from "react-native";
-import { Card, CardItem, Header, Body, Icon } from "native-base";
+import {
+  View,
+  Text,
+  ScrollView,
+  ActivityIndicator,
+  TouchableOpacity,
+} from "react-native";
+import { Card, CardItem, Header, Body, Icon, Right, Badge } from "native-base";
 import Fire from "../FIre";
 import * as Animatable from "react-native-animatable";
 export default function PastOrder(props) {
@@ -70,15 +76,29 @@ export default function PastOrder(props) {
           <Body style={{ alignItems: "center" }}>
             <Text
               style={{
-                fontSize: 16,
+                fontSize: 18,
                 color: "#FFF",
                 fontWeight: "900",
-                textAlign: "center",
+                //              marginLeft: 10
+                //textAlign: "center"
               }}
             >
               Your Pending Orders
             </Text>
           </Body>
+          <Right>
+            <TouchableOpacity
+              style={{ margin: 16 }}
+              onPress={props.navigation.openDrawer}
+            >
+              <Icon
+                type="FontAwesome"
+                name="bars"
+                size={24}
+                color="#161924"
+              ></Icon>
+            </TouchableOpacity>
+          </Right>
         </Header>
         <ScrollView style={{ flex: 1 }}>
           {orders
@@ -136,20 +156,24 @@ export default function PastOrder(props) {
                       bordered
                     >
                       {order.status === "pending" && (
-                        <Icon
-                          type="FontAwesome5"
-                          name="truck-loading"
-                          size={16}
-                          style={{ color: "#2183f2" }}
-                        />
+                        <View style={{ flexDirection: "row" }}>
+                          <Icon
+                            name="check"
+                            type="FontAwesome5"
+                            style={{ color: "gray" }}
+                          />
+                          <Text style={{ marginTop: 5 }}>Sent</Text>
+                        </View>
                       )}
                       {order.status === "delivery on progress" && (
-                        <Icon
-                          type="MaterialCommunityIcons"
-                          name="truck-delivery"
-                          size={20}
-                          style={{ color: "#2183f2" }}
-                        />
+                        <View style={{ flexDirection: "row" }}>
+                          <Icon
+                            name="check-double"
+                            type="FontAwesome5"
+                            style={{ color: "#2183f2" }}
+                          />
+                          <Text>Delivery on Progress</Text>
+                        </View>
                       )}
                       <Text style={{ color: "#2183f2" }}>
                         Rs. {order.amount}

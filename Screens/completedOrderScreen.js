@@ -6,7 +6,7 @@ import {
   ActivityIndicator,
   TouchableOpacity,
 } from "react-native";
-import { Card, CardItem, Header, Body, Icon } from "native-base";
+import { Card, CardItem, Header, Body, Icon, Right } from "native-base";
 import Fire from "../FIre";
 const deleteOrder = (id) => {
   Fire.shared.firestore
@@ -84,15 +84,29 @@ export default function CompletedOrder(props) {
           <Body style={{ alignItems: "center" }}>
             <Text
               style={{
-                fontSize: 16,
+                fontSize: 18,
                 color: "#FFF",
                 fontWeight: "900",
-                textAlign: "center",
+                //              marginLeft: 10
+                //textAlign: "center"
               }}
             >
               Transaction History
             </Text>
           </Body>
+          <Right>
+            <TouchableOpacity
+              style={{ margin: 16 }}
+              onPress={props.navigation.openDrawer}
+            >
+              <Icon
+                type="FontAwesome"
+                name="bars"
+                size={24}
+                color="#161924"
+              ></Icon>
+            </TouchableOpacity>
+          </Right>
         </Header>
         <ScrollView style={{ flex: 1 }}>
           {orders.map((order) => {
@@ -145,7 +159,7 @@ export default function CompletedOrder(props) {
                     style={{ justifyContent: "space-between" }}
                     bordered
                   >
-                    <TouchableOpacity onPress={() => deleteOrder(order.id)}>
+                    <TouchableOpacity>
                       <Icon
                         type="MaterialCommunityIcons"
                         name="file-check"

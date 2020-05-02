@@ -110,18 +110,6 @@ export default function InfoScreen(props) {
               ></PricingCard>
             );
           })}
-          <View style={{ margin: 20, marginLeft: 20 }}>
-            <Text style={{ fontSize: 32, fontWeight: "bold" }}>Contact Us</Text>
-            <Text style={{ fontSize: 20, fontWeight: "500" }}>
-              Address: Patan,Lalitpur
-            </Text>
-            <Text style={{ fontSize: 20, fontWeight: "500" }}>
-              Email: shakyasushan0@gmail.com
-            </Text>
-            <Text style={{ fontSize: 20, fontWeight: "500" }}>
-              Phone : 9860036647
-            </Text>
-          </View>
 
           <Modal
             animationType="slide"
