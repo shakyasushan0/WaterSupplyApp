@@ -98,6 +98,7 @@ class Fire {
   addOrder(
     id,
     amount,
+    branch,
     name,
     contact,
 
@@ -116,6 +117,7 @@ class Fire {
     db.set({
       userId: id,
       amount,
+      branch,
       customer: name,
       contact: contact,
 

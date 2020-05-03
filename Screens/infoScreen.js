@@ -255,6 +255,7 @@ export default function InfoScreen(props) {
                       await Fire.shared.addOrder(
                         user.id,
                         total,
+                        user.branch,
                         user.name,
                         user.telnum,
                         user.address,
