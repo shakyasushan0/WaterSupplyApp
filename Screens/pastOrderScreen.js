@@ -12,6 +12,7 @@ import * as Animatable from "react-native-animatable";
 export default function PastOrder(props) {
   const [orders, setOrders] = useState([]);
   const [errMess, setErrMess] = useState(null);
+  const [timePassed, setTimePassed] = useState(false);
   useEffect(() => {
     const user = props.id || Fire.shared.uid;
     Fire.shared.firestore
@@ -47,7 +48,8 @@ export default function PastOrder(props) {
       });
   }, []);
 
-  if (orders.length === 0) {
+  if (orders.length === 0 && timePassed == false) {
+    setTimeout(() => setTimePassed(true), 10000);
     return (
       <View>
         <Header transparent style={{ backgroundColor: "#2183f2" }}>
@@ -66,6 +68,53 @@ export default function PastOrder(props) {
         </Header>
         <View style={{ alignItems: "center", justifyContent: "center" }}>
           <ActivityIndicator size="large" />
+        </View>
+      </View>
+    );
+  }
+  if (orders.length === 0 && timePassed) {
+    return (
+      <View style={{ flex: 1 }}>
+        <Header transparent style={{ backgroundColor: "#2183f2" }}>
+          <Body style={{ alignItems: "center" }}>
+            <Text
+              style={{
+                fontSize: 16,
+                color: "#FFF",
+                fontWeight: "900",
+                textAlign: "center",
+              }}
+            >
+              Your Pending Orders
+            </Text>
+          </Body>
+          <Right>
+            <TouchableOpacity
+              style={{ margin: 16 }}
+              onPress={props.navigation.openDrawer}
+            >
+              <Icon
+                type="FontAwesome"
+                name="bars"
+                size={24}
+                color="#161924"
+              ></Icon>
+            </TouchableOpacity>
+          </Right>
+        </Header>
+        <View
+          style={{ alignItems: "center", justifyContent: "center", flex: 1 }}
+        >
+          <Icon
+            name="frown-o"
+            type="FontAwesome"
+            style={{ fontSize: 100, fontWeight: "800", color: "#1287A5" }}
+          />
+          <Text
+            style={{ fontSize: 20, fontWeight: "800", textAlign: "center" }}
+          >
+            You dont have ordered anything yet
+          </Text>
         </View>
       </View>
     );
