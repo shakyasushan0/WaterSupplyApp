@@ -7,17 +7,19 @@ import {
   Image,
   TextInput,
   ScrollView,
+  Picker,
 } from "react-native";
 import { Header, Body, Right, Icon } from "native-base";
 import { Card, CheckBox } from "react-native-elements";
-import DatePicker from "react-native-date-picker";
+import DatePicker from "react-native-datepicker";
 
 function Order(props) {
   const [single, setSingle] = useState(false);
   const [recurrence, setReccurence] = useState(false);
   const [date, setDate] = useState(new Date());
+  const [time, setTime] = useState("");
   return (
-    <ScrollView style={styles.container}>
+    <View style={styles.container}>
       <Header
         transparent
         style={{ alignItems: "flex-end", backgroundColor: "#2183f2" }}
@@ -49,7 +51,7 @@ function Order(props) {
         </Right>
       </Header>
 
-      <View>
+      <ScrollView>
         <Card>
           <View style={{ flexDirection: "row" }}>
             <Image
@@ -132,11 +134,71 @@ function Order(props) {
               marginTop: -20,
             }}
           />
-          <Text>Sel</Text>
-          <DatePicker date={date} onDateChange={setDate} />
+          <Text style={{ color: "#99AAAB" }}>
+            Select Prefered Delivery Date and Time
+          </Text>
+          <DatePicker
+            style={{ width: 200, marginTop: 20, marginLeft: 15 }}
+            date={date}
+            mode="date"
+            placeholder="select date"
+            format="YYYY-MM-DD"
+            confirmBtnText="Confirm"
+            cancelBtnText="Cancel"
+            customStyles={{
+              dateIcon: {
+                position: "absolute",
+                left: 0,
+                top: 4,
+                marginLeft: 0,
+              },
+              dateInput: {
+                marginLeft: 36,
+              },
+              // ... You can check the source to find the other keys.
+            }}
+            onDateChange={(date) => setDate(date)}
+          />
+          <View style={{ marginTop: 20, marginLeft: 17, flexDirection: "row" }}>
+            <Icon
+              name="ios-clock"
+              type="Ionicons"
+              style={{ fontSize: 32, color: "#E44236" }}
+            />
+            <View
+              style={{
+                width: 163,
+                borderWidth: 0.5,
+                marginLeft: 8,
+                justifyContent: "center",
+              }}
+            >
+              <Picker
+                selectedValue={time}
+                style={{
+                  height: 50,
+                  width: 170,
+                  marginTop: -7,
+                  height: 47,
+                }}
+                onValueChange={(itemValue, itemIndex) => setTime(itemValue)}
+                mode="dropdown"
+              >
+                <Picker.Item label="9 to 12 am" value="9 to 12 am" />
+                <Picker.Item label="2 to 5 pm" value="2 to 5 pm" />
+                <Picker.Item label="6 to 9 pm" value="6 to 9 pm" />
+              </Picker>
+            </View>
+          </View>
         </Card>
-      </View>
-    </ScrollView>
+        <View style={{ alignItems: "center" }}>
+          <TouchableOpacity style={styles.button}>
+            <Text style={{ color: "#FFF", fontWeight: "500" }}>Add Order</Text>
+          </TouchableOpacity>
+        </View>
+        <View style={{ height: 15 }} />
+      </ScrollView>
+    </View>
   );
 }
 export default Order;
@@ -158,5 +220,15 @@ const styles = StyleSheet.create({
     height: 115,
     resizeMode: "stretch",
     marginLeft: 18,
+  },
+  button: {
+    marginHorizontal: 30,
+    backgroundColor: "#2183f2",
+    borderRadius: 7,
+    height: 50,
+    alignItems: "center",
+    justifyContent: "center",
+    marginTop: 30,
+    width: 200,
   },
 });
