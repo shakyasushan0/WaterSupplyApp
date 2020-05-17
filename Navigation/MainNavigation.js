@@ -7,8 +7,9 @@ import PastOrder from "../Screens/pastOrderScreen";
 import CompletedOrder from "../Screens/completedOrderScreen";
 import Profile from "../Screens/profile";
 import Contact from "../Screens/ContactScreen";
+import Order from "../Screens/OrderScreen";
 
-import { Icon } from "native-base";
+import { Icon } from "react-native-elements";
 const myDrawerNvigator = createDrawerNavigator(
   {
     InfoScreen: {
@@ -16,7 +17,7 @@ const myDrawerNvigator = createDrawerNavigator(
       navigationOptions: {
         title: "Info",
         drawerIcon: ({ tintColor }) => (
-          <Icon type="Entypo" name="info" size={16} color={tintColor} />
+          <Icon type="entypo" name="info" size={24} color={tintColor} />
         ),
       },
     },
@@ -25,7 +26,7 @@ const myDrawerNvigator = createDrawerNavigator(
       navigationOptions: {
         title: "Pending Orders",
         drawerIcon: ({ tintColor }) => (
-          <Icon type="Feather" name="file-minus" size={16} color={tintColor} />
+          <Icon type="feather" name="file-minus" size={24} color={tintColor} />
         ),
       },
     },
@@ -35,9 +36,9 @@ const myDrawerNvigator = createDrawerNavigator(
         title: "History",
         drawerIcon: ({ tintColor }) => (
           <Icon
-            type="MaterialIcons"
+            type="material-icons"
             name="history"
-            size={16}
+            size={24}
             color={tintColor}
           />
         ),
@@ -49,9 +50,23 @@ const myDrawerNvigator = createDrawerNavigator(
         title: "Contact Us",
         drawerIcon: ({ tintColor }) => (
           <Icon
-            type="FontAwesome"
+            type="font-awesome"
             name="address-card"
-            // size={16}
+            size={24}
+            color={tintColor}
+          />
+        ),
+      },
+    },
+    Order: {
+      screen: Order,
+      navigationOptions: {
+        title: "Place Order",
+        drawerIcon: ({ tintColor }) => (
+          <Icon
+            type="material-icons"
+            name="add-shopping-cart"
+            size={24}
             color={tintColor}
           />
         ),
