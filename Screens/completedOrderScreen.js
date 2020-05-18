@@ -17,6 +17,7 @@ const deleteOrder = (id) => {
     .catch((err) => alert(err));
 };
 import * as Animatable from "react-native-animatable";
+
 export default function CompletedOrder(props) {
   const [orders, setOrders] = useState([]);
   const [timePassed, setTimePassed] = useState(false);

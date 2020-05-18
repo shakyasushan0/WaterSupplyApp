@@ -107,11 +107,13 @@ class Fire {
     time,
     qty1,
     qty2,
-    qty3,
 
     status,
     latitude,
-    longitude
+    longitude,
+    preferedDate,
+    preferedTime,
+    orderType
   ) {
     let db = this.firestore.collection("orders").doc(this.timestamp.toString());
     db.set({
@@ -126,9 +128,8 @@ class Fire {
       date: date,
       time: time,
       order: {
-        jar_20l: qty1,
-        jar_18l: qty2,
-        bottle_1l: qty3,
+        jar: qty1,
+        bottle: qty2,
       },
       status: status,
       latitude: latitude,
@@ -136,6 +137,9 @@ class Fire {
       occupied: false,
       occupiedBy: "",
       deliveredDate: "",
+      preferedDate,
+      preferedTime,
+      orderType,
     });
   }
 }
