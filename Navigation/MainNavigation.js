@@ -10,14 +10,38 @@ import Contact from "../Screens/ContactScreen";
 import Order from "../Screens/OrderScreen";
 
 import { Icon } from "react-native-elements";
+import RecurrenceOrder from "../Screens/RecurrenceOrders";
 const myDrawerNvigator = createDrawerNavigator(
   {
-    InfoScreen: {
-      screen: InfoScreen,
+    // InfoScreen: {
+    //   screen: InfoScreen,
+    //   navigationOptions: {
+    //     title: "Info",
+    //     drawerIcon: ({ tintColor }) => (
+    //       <Icon type="entypo" name="info" size={24} color={tintColor} />
+    //     ),
+    //   },
+    // },
+    Order: {
+      screen: Order,
       navigationOptions: {
-        title: "Info",
+        title: "Place Order",
         drawerIcon: ({ tintColor }) => (
-          <Icon type="entypo" name="info" size={24} color={tintColor} />
+          <Icon
+            type="material-icons"
+            name="add-shopping-cart"
+            size={24}
+            color={tintColor}
+          />
+        ),
+      },
+    },
+    RecurrenceOrder: {
+      screen: RecurrenceOrder,
+      navigationOptions: {
+        title: "Recurrence Orders",
+        drawerIcon: ({ tintColor }) => (
+          <Icon type="feather" name="file-text" size={24} color={tintColor} />
         ),
       },
     },
@@ -30,6 +54,7 @@ const myDrawerNvigator = createDrawerNavigator(
         ),
       },
     },
+
     CompletedOrder: {
       screen: CompletedOrder,
       navigationOptions: {
@@ -52,20 +77,6 @@ const myDrawerNvigator = createDrawerNavigator(
           <Icon
             type="font-awesome"
             name="address-card"
-            size={24}
-            color={tintColor}
-          />
-        ),
-      },
-    },
-    Order: {
-      screen: Order,
-      navigationOptions: {
-        title: "Place Order",
-        drawerIcon: ({ tintColor }) => (
-          <Icon
-            type="material-icons"
-            name="add-shopping-cart"
             size={24}
             color={tintColor}
           />

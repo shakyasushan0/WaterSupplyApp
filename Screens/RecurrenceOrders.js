@@ -5,11 +5,13 @@ import {
   ScrollView,
   ActivityIndicator,
   TouchableOpacity,
+  StyleSheet,
 } from "react-native";
 import { Card, CardItem, Header, Body, Icon, Right, Badge } from "native-base";
 import Fire from "../FIre";
 import * as Animatable from "react-native-animatable";
-export default function PastOrder(props) {
+
+function RecurrenceOrder(props) {
   const [orders, setOrders] = useState([]);
   const [errMess, setErrMess] = useState(null);
   const [timePassed, setTimePassed] = useState(false);
@@ -18,7 +20,7 @@ export default function PastOrder(props) {
     Fire.shared.firestore
       .collection("orders")
       .where("userId", "==", user)
-      .where("orderType", "==", "One Time Order")
+      .where("orderType", "==", "Recurrence Order")
 
       .onSnapshot((querySnapshot) => {
         const orders = [];
@@ -63,7 +65,7 @@ export default function PastOrder(props) {
                 textAlign: "center",
               }}
             >
-              Your Pending Orders
+              Recurrence Orders
             </Text>
           </Body>
         </Header>
@@ -86,7 +88,7 @@ export default function PastOrder(props) {
                 textAlign: "center",
               }}
             >
-              Your Pending Orders
+              Recurrence Orders
             </Text>
           </Body>
           <Right>
@@ -133,7 +135,7 @@ export default function PastOrder(props) {
                 //textAlign: "center"
               }}
             >
-              Your Pending Orders
+              Recurrence Orders
             </Text>
           </Body>
           <Right>
@@ -232,3 +234,12 @@ export default function PastOrder(props) {
     );
   }
 }
+export default RecurrenceOrder;
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+});

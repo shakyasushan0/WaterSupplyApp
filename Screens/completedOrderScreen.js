@@ -180,25 +180,19 @@ export default function CompletedOrder(props) {
                   </CardItem>
                   <CardItem style={{ justifyContent: "space-between" }}>
                     <Body>
-                      {order.order.jar_20l != 0 && (
+                      {order.order.jar != 0 && (
                         <Text style={{ color: "#2183f2" }}>
-                          Water jar 20l
-                          .......................................................{" "}
-                          {order.order.jar_20l} jars
+                          Normal 20L Can
+                          ...............................................
+                          {order.order.jar} cans
                         </Text>
                       )}
-                      {order.order.jar_18l != 0 && (
+
+                      {order.order.bottle != 0 && (
                         <Text style={{ color: "#2183f2" }}>
-                          Water jar 18l
-                          .......................................................{" "}
-                          {order.order.jar_18l} jars
-                        </Text>
-                      )}
-                      {order.order.bottle_1l != 0 && (
-                        <Text style={{ color: "#2183f2" }}>
-                          Water Bottle
-                          ..................................................{" "}
-                          {order.order.bottle_1l} bottles
+                          Normal 1L Can
+                          ..................................................
+                          {order.order.bottle} cans
                         </Text>
                       )}
                     </Body>
