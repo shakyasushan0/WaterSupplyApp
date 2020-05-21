@@ -11,20 +11,56 @@ import {
   TouchableOpacity,
   StyleSheet,
   Alert,
+  ActivityIndicator,
 } from "react-native";
 
 import { Icon, Header, Right, Body } from "native-base";
 import * as Animatable from "react-native-animatable";
 import * as MailComposer from "expo-mail-composer";
 import { Card, Button } from "react-native-elements";
-function sendMail() {
+import Fire from "../FIre";
+function sendMail(email) {
   MailComposer.composeAsync({
-    recipients: ["shakyasushan0@gmail.com"],
+    recipients: [email],
     subject: "Enquiry",
     body: "To whom it may concern:",
   });
 }
 function Contact(props) {
+  const [usr, setUser] = useState({});
+  const [name, setName] = useState("");
+  const [contact, setContact] = useState("");
+  const [email, setEmail] = useState("");
+  const [address, setAddress] = useState("");
+  const [details, setDetails] = useState([]);
+  useEffect(() => {
+    const user = props.uid || Fire.shared.uid;
+    Fire.shared.firestore
+      .collection("users")
+      .doc(user)
+      .onSnapshot((doc) => {
+        setUser(doc.data());
+      });
+
+    Fire.shared.firestore
+      .collection("Retailer Details")
+      .onSnapshot((querySnapshot) => {
+        const details = [];
+        querySnapshot.forEach((doc) => {
+          const { address, contact, email, name } = doc.data();
+          details.push({
+            id: doc.id,
+            address,
+            contact,
+            email,
+            name,
+          });
+        });
+        setDetails(details);
+      });
+  }, []);
+
+  const detail = details.filter((d) => d.id === usr.branch)[0];
   return (
     <View style={{ flex: 1 }}>
       <Header
@@ -59,11 +95,22 @@ function Contact(props) {
       </Header>
       <Animatable.View animation="fadeInDown" duration={2000} delay={500}>
         <Card title="Contact Information">
-          <Text style={{ margin: 10 }}>Chayabahal,Lalitpur</Text>
-          <Text style={{ margin: 10 }}>Nepal</Text>
-          <Text style={{ margin: 10 }}> Tel: +977 9860036647</Text>
-          <Text style={{ margin: 10 }}> Fax: +852 8765 4321</Text>
-          <Text style={{ margin: 10 }}>Email:shakyasushan0@gmail.com</Text>
+          {details.length === 0 && (
+            <View>
+              <ActivityIndicator size="large" />
+            </View>
+          )}
+          {details.length != 0 && (
+            <Animatable.View animation="zoomIn" duration={2000}>
+              <Text style={{ margin: 10 }}>{detail.name}</Text>
+              <Text style={{ margin: 10 }}>{detail.address}</Text>
+              <Text style={{ margin: 10 }}>Nepal</Text>
+              <Text style={{ margin: 10 }}>Tel: +977 {detail.contact}</Text>
+
+              <Text style={{ margin: 10 }}>Email:{detail.email}</Text>
+            </Animatable.View>
+          )}
+
           <Button
             title="Send Email"
             buttonStyle={{ backgroundColor: "#2183f2" }}
@@ -74,7 +121,7 @@ function Contact(props) {
                 style={{ color: "white", marginRight: 5 }}
               />
             }
-            onPress={sendMail}
+            onPress={() => sendMail(detail.email)}
           />
         </Card>
       </Animatable.View>
