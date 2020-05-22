@@ -18,7 +18,7 @@ import RadioButton from "../Components/RadioButton";
 import Fire from "../FIre";
 
 function Order(props) {
-  const [date, setDate] = useState(new Date());
+  const [date, setDate] = useState("");
   const [time, setTime] = useState("");
   const [jar, setJar] = useState(0);
   const [bottle, setBottle] = useState(0);
@@ -46,6 +46,7 @@ function Order(props) {
     var fullTime = hours + ":" + min + ":" + sec;
     setOrderDate(fullDate);
     setOrderTime(fullTime);
+    console.log(date);
   }, []);
 
   const PROP = [
